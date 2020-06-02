@@ -43,7 +43,7 @@ class Application(tk.Frame):
         self.configure(bg='gray')
 
         # tabs
-        self.tabControl = ttk.Notebook(master, style='TNotebook')  # Create Tab Control
+        self.tabControl = ttk.Notebook(self.master, style='TNotebook')  # Create Tab Control
         self.tab1 = ttk.Frame(self.tabControl, style='TNotebook')  # Create a tab
         self.tabControl.add(self.tab1, text='e-Processo')  # Add the tab
         self.tab2 = ttk.Frame(self.tabControl, style='TNotebook')  # Add a second tab
@@ -153,6 +153,7 @@ class Application(tk.Frame):
         self.define_raiz()
 
         # tab2
+        # Google
         ttk.Label(self.tab2, text='Google', style='Title.TLabel').grid(row=0, column=0, columnspan=6,
                                                                                         pady=3)
         self.radio_google_rfb = tk.Radiobutton(self.tab2, text="Google RFB", variable=self.radio_var, value=1,
@@ -165,11 +166,10 @@ class Application(tk.Frame):
         tt.ToolTip(self.radio_map_it, 'Pesquisa enderenço no Google Maps')
         self.entry_gm = tk.Entry(self.tab2, style_entry)
         self.entry_gm.grid(row=2, columnspan=6, pady=3)
-        self.entry_gm.bind('<Return>', self.roda_gm)
+        self.entry_gm.bind('<Return>', self.roda_google)
         self.radio_google_rfb.select()
-        self.run_gm = tk.Button(self.tab2, style_button, text='Pesquisa', command=self.roda_gm)
+        self.run_gm = tk.Button(self.tab2, style_button, text='Pesquisa', command=self.roda_google)
         self.run_gm.grid(row=3, column=0, columnspan=6)
-
 
     def define_raiz(self):
         '''Define caracterísicas da janela'''
@@ -304,7 +304,7 @@ class Application(tk.Frame):
         self.texto_saida.insert(tk.INSERT, f'Processo(s) aberto(s):\n{saída}\n')
         self.texto_saida.see(tk.END)
 
-    def roda_gm(self, event=None):
+    def roda_google(self, event=None):
         pesquisa = self.entry_gm.get()
         if self.radio_var.get() == 1:
             webbrowser.open(f'https://www.google.com/search?q={pesquisa}+site:receita.economia.gov.br')
