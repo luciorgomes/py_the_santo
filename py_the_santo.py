@@ -18,6 +18,7 @@ class Application(tk.Frame):
         self.valor_negrito = tk.IntVar()
         self.valor_italico = tk.IntVar()
         self.valor_sublinhado = tk.IntVar()
+        self.radio_var = tk.IntVar()
         self.pack()
 
         # cria os componentes da janela
@@ -51,6 +52,7 @@ class Application(tk.Frame):
         # self.tabControl.pack(expand=1, fill="both")  # Pack to make visible
 
         # widgets
+        # tab 1
         # formata texto
         ttk.Label(self.tab1, text='Formata texto para nota', style='Title.TLabel').grid(row=0, column=0, columnspan=6, pady=3)
         ttk.Label(self.tab1, text='Estilo:', style='BG.TLabel').grid(row=1, column=0, sticky='w', padx=2)
@@ -150,10 +152,29 @@ class Application(tk.Frame):
         self.texto_nota.focus()
         self.define_raiz()
 
+        # tab2
+        ttk.Label(self.tab2, text='Google', style='Title.TLabel').grid(row=0, column=0, columnspan=6,
+                                                                                        pady=3)
+        self.radio_google_rfb = tk.Radiobutton(self.tab2, text="Google RFB", variable=self.radio_var, value=1,
+                                               foreground="black", background="gray", indicatoron=0, bd=2, relief=tk.RAISED, width=24)
+        self.radio_google_rfb.grid(row=1, column=0,  padx=3, sticky='e')
+        tt.ToolTip(self.radio_google_rfb, 'Pesquisa o termo no site da RFB usando o Google')
+        self.radio_map_it = tk.Radiobutton(self.tab2, text="Map It", variable=self.radio_var, value=2,
+                                           foreground="black", background="gray", indicatoron=0, bd=2, relief=tk.RAISED, width=24)
+        self.radio_map_it.grid(row=1, column=1, padx=3)
+        tt.ToolTip(self.radio_map_it, 'Pesquisa enderenço no Google Maps')
+        self.entry_gm = tk.Entry(self.tab2, style_entry)
+        self.entry_gm.grid(row=2, columnspan=6, pady=3)
+        self.entry_gm.bind('<Return>', self.roda_gm)
+        self.radio_google_rfb.select()
+        self.run_gm = tk.Button(self.tab2, style_button, text='Pesquisa', command=self.roda_gm)
+        self.run_gm.grid(row=3, column=0, columnspan=6)
+
+
     def define_raiz(self):
         '''Define caracterísicas da janela'''
 
-        self.master.title('e-Processo')
+        self.master.title('Py the Santo...')
         self.master.configure(bg='gray')
         # dimensões da janela
         largura = 420
@@ -282,6 +303,13 @@ class Application(tk.Frame):
                 saída += processo + '\n'
         self.texto_saida.insert(tk.INSERT, f'Processo(s) aberto(s):\n{saída}\n')
         self.texto_saida.see(tk.END)
+
+    def roda_gm(self, event=None):
+        pesquisa = self.entry_gm.get()
+        if self.radio_var.get() == 1:
+            webbrowser.open(f'https://www.google.com/search?q={pesquisa}+site:receita.economia.gov.br')
+        else:
+            webbrowser.open(f'https://google.com/maps/place/{pesquisa}')
 
 def e_processo():
     '''busca arquivos de valor maior ou igual a um valor dado em um diretório'''
