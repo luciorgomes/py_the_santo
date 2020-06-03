@@ -8,6 +8,7 @@ import ToolTip as tt
 import webbrowser
 import time
 import re
+import os
 
 
 class Application(tk.Frame):
@@ -20,6 +21,7 @@ class Application(tk.Frame):
         self.valor_sublinhado = tk.IntVar()
         self.radio_var = tk.IntVar()
         self.pack()
+        self.google_chrome = self.busca_google_chrome()
 
         # cria os componentes da janela
         # estilos
@@ -171,11 +173,12 @@ class Application(tk.Frame):
         self.radio_google_rfb.select()
         self.run_gm = tk.Button(self.tab2, style_button, text='Pesquisa', command=self.roda_google)
         self.run_gm.grid(row=3, column=0, columnspan=6)
+        tt.ToolTip(self.run_gm, 'Aciona a consulta do termo ou endereço para a opção selecionada (Google RFB ou Maps)')
         ttk.Separator(self.tab2, orient=tk.HORIZONTAL).grid(row=4, columnspan=6, padx=10, pady=3, sticky=tk.EW)
+
 
     def define_raiz(self):
         '''Define caracterísicas da janela'''
-
         self.master.title('Py the Santo...')
         self.master.configure(bg='gray')
         # dimensões da janela
@@ -190,6 +193,7 @@ class Application(tk.Frame):
         self.master.geometry('%dx%d+%d+%d' % (largura, altura, posx, posy))  # dimensões + posição inicial
 
     def exit(self, event=None):
+        '''Fecha o aplicativo'''
         self.master.destroy()
 
     def formata_texto_nota(self, event=None):
@@ -279,18 +283,23 @@ class Application(tk.Frame):
         self.texto_saida.see(tk.END)
 
     def abre_e_processo(self, event=None):
+        '''Faz login no e-Processo'''
         webbrowser.open('https://eprocesso.suiterfb.receita.fazenda/')
 
     def abre_caixa_trabalho(self, event=None):
+        '''Abre caixa de trabalho de equipe no e-Processo'''
         webbrowser.open('https://eprocesso.suiterfb.receita.fazenda/eprocesso/index.html#/ngx/caixa-trabalho-equipe')
 
     def abre_gerencial_estoque(self, event=None):
+        '''Abre gerencioal de estoque no e-Processo'''
         webbrowser.open("https://eprocesso.suiterfb.receita.fazenda/relatorios/ControleManterVisao.asp?psAcao=exibir")
 
     def abre_consulta(self, event=None):
+        '''Abre consulta no e-Processo'''
         webbrowser.open("https://eprocesso.suiterfb.receita.fazenda/eprocesso/index.html#/consultaProcesso")
 
     def abre_processos(self, event=None):
+        '''Abre processos copiados no cliupboard no e-Processo'''
         mem = pyperclip.paste()
         if ',' in mem: # se processos concatenados separados por vírgula
             mem = mem.split(',')
@@ -306,18 +315,34 @@ class Application(tk.Frame):
         self.texto_saida.insert(tk.INSERT, f'Processo(s) aberto(s):\n{saída}\n')
         self.texto_saida.see(tk.END)
 
-    def roda_google(self, event=None):
-        pesquisa = self.entry_gm.get()
-        if self.radio_var.get() == 1:
-            webbrowser.open(f'https://www.google.com/search?q={pesquisa}+site:receita.economia.gov.br')
+    def busca_google_chrome(self):
+        '''Verifica a existência da instalação do Google Chrome no Windows'''
+        path = 'C:/Program Files (x86)/Google/Chrome/Application/chrome.exe'
+        if os.path.exists(path):
+            return path
         else:
-            webbrowser.open(f'https://google.com/maps/place/{pesquisa}')
+            return None
 
-def e_processo():
+    def roda_google(self, event=None):
+        '''Executa consulta no site da RFB usando o Google a abre endereço no Google Maps'''
+        pesquisa = self.entry_gm.get()
+        if self.google_chrome is not None:
+            webbrowser.register('chrome', None, webbrowser.BackgroundBrowser(self.google_chrome))
+            if self.radio_var.get() == 1:
+                webbrowser.get('chrome').open(f'https://www.google.com/search?q={pesquisa}+site:receita.economia.gov.br')
+            else:
+                webbrowser.get('chrome').open(f'https://google.com/maps/place/{pesquisa}')
+        else:
+            if self.radio_var.get() == 1:
+                webbrowser.open(f'https://www.google.com/search?q={pesquisa}+site:receita.economia.gov.br')
+            else:
+                webbrowser.open(f'https://google.com/maps/place/{pesquisa}')
+
+def py_the_santo():
     '''busca arquivos de valor maior ou igual a um valor dado em um diretório'''
     root = tk.Tk()
     app = Application(master=root)
     app.mainloop()
 
 if __name__ == '__main__':  # executa se chamado diretamente
-    e_processo()
+    py_the_santo()
