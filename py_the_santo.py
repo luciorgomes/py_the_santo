@@ -25,8 +25,9 @@ class Application(tk.Frame):
         # estilos
         style = ttk.Style()
         style = ttk.Style()
-        style.configure('TNotebook', foreground="black", background="gray", font='Helvetica 11 bold')
-        style.configure('TNotebook.Tab', background='#555555')
+        style.configure('TFrame', foreground="black", background='gray')
+        style.configure('TNotebook', foreground="black", background='gray', font='Helvetica 11 bold')
+        style.configure('TNotebook.Tab', background='gray')
         style.map('TNotebook.Tab', background=[('selected', 'gray'), ('active', '#606060')],
                   foreground=[('selected', 'black'), ('active', '#bababa')])
         style.configure('Title.TLabel', foreground="black", background="gray", padding=1, font='Helvetica 11 bold')
@@ -44,9 +45,9 @@ class Application(tk.Frame):
 
         # tabs
         self.tabControl = ttk.Notebook(self.master, style='TNotebook')  # Create Tab Control
-        self.tab1 = ttk.Frame(self.tabControl, style='TNotebook')  # Create a tab
+        self.tab1 = ttk.Frame(self.tabControl, style='TFrame')  # Create a tab
         self.tabControl.add(self.tab1, text='e-Processo')  # Add the tab
-        self.tab2 = ttk.Frame(self.tabControl, style='TNotebook')  # Add a second tab
+        self.tab2 = ttk.Frame(self.tabControl, style='TFrame')  # Add a second tab
         self.tabControl.add(self.tab2, text='Outros')  # Make second tab visible
         self.tabControl.pack()  # Pack to make visible
         # self.tabControl.pack(expand=1, fill="both")  # Pack to make visible
@@ -157,19 +158,20 @@ class Application(tk.Frame):
         ttk.Label(self.tab2, text='Google', style='Title.TLabel').grid(row=0, column=0, columnspan=6,
                                                                                         pady=3)
         self.radio_google_rfb = tk.Radiobutton(self.tab2, text="Google RFB", variable=self.radio_var, value=1,
-                                               foreground="black", background="gray", indicatoron=0, bd=2, relief=tk.RAISED, width=24)
-        self.radio_google_rfb.grid(row=1, column=0,  padx=3, sticky='e')
+                                               foreground="black", background="gray", indicatoron=0, bd=2, relief=tk.RAISED, width=27)
+        self.radio_google_rfb.grid(row=1, column=0,  padx=3, sticky='w', pady=3)
         tt.ToolTip(self.radio_google_rfb, 'Pesquisa o termo no site da RFB usando o Google')
-        self.radio_map_it = tk.Radiobutton(self.tab2, text="Map It", variable=self.radio_var, value=2,
-                                           foreground="black", background="gray", indicatoron=0, bd=2, relief=tk.RAISED, width=24)
-        self.radio_map_it.grid(row=1, column=1, padx=3)
+        self.radio_map_it = tk.Radiobutton(self.tab2, text='Maps', variable=self.radio_var, value=2,
+                                           foreground="black", background="gray", indicatoron=0, bd=2, relief=tk.RAISED, width=27)
+        self.radio_map_it.grid(row=1, column=1, padx=3, sticky='e', pady=3)
         tt.ToolTip(self.radio_map_it, 'Pesquisa enderenço no Google Maps')
         self.entry_gm = tk.Entry(self.tab2, style_entry)
-        self.entry_gm.grid(row=2, columnspan=6, pady=3)
+        self.entry_gm.grid(row=2, columnspan=6, pady=3, padx=8)
         self.entry_gm.bind('<Return>', self.roda_google)
         self.radio_google_rfb.select()
         self.run_gm = tk.Button(self.tab2, style_button, text='Pesquisa', command=self.roda_google)
         self.run_gm.grid(row=3, column=0, columnspan=6)
+        ttk.Separator(self.tab2, orient=tk.HORIZONTAL).grid(row=4, columnspan=6, padx=10, pady=3, sticky=tk.EW)
 
     def define_raiz(self):
         '''Define caracterísicas da janela'''
@@ -178,7 +180,7 @@ class Application(tk.Frame):
         self.master.configure(bg='gray')
         # dimensões da janela
         largura = 420
-        altura = 790
+        altura = 810
         # resolução da tela
         largura_screen = self.master.winfo_screenwidth()
         altura_screen = self.master.winfo_screenheight()
