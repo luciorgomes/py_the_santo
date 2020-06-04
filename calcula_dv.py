@@ -1,7 +1,7 @@
 import re
 import sys
 
-def remove_caracteres(self, entrada):
+def remove_caracteres(entrada):
     entrada_numerica =  re.sub("[-./]", "", entrada) # remove traço, ponto e barra
     return entrada_numerica
 
@@ -89,7 +89,7 @@ def calcula_cnpj(ni):
         return saida
 
 def calcula_processo(processo, tipo):
-    entrada_processo = self.remove_caracteres(proc)
+    entrada_processo = remove_caracteres(processo)
     if (len(entrada_processo) == 17 and tipo == 1) or (len(entrada_processo) == 15 and tipo == 2) \
             and entrada_processo.isdecimal():
         proc_calc = entrada_processo[:-2]
@@ -102,8 +102,8 @@ def calcula_processo(processo, tipo):
             saída = f'Informe a entrada com 17 ou \n15 dígitos'
         else:
             saida  = f'Informe a entrada com 15 ou \n13 dígitos'
-        return saida
-        exit.sys()
+            return saida
+            exit.sys()
 
     if proc_calc is not None:
         soma1 = 0

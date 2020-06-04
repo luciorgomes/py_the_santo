@@ -377,11 +377,15 @@ class Application(tk.Frame):
                 webbrowser.open(f'https://google.com/maps/place/{pesquisa}')
 
     def calc_dv(self, event=None):
-        if self.radio_dv_var == 1:
+        # self.texto_saida_2.insert(tk.INSERT, self.entry_dv.get())
+        if self.radio_dv_var.get() == 1:
             saida = calcula_dv.calcula_cpf(self.entry_dv.get())
-            self.texto_saida_2.insert(tk.INSERT, saida + '\n\n')
-            self.texto_saida_2.see(tk.END)
-
+        elif self.radio_dv_var.get() == 2:
+            saida = calcula_dv.calcula_cnpj(self.entry_dv.get())
+        elif self.radio_dv_var.get() > 2:
+            saida = calcula_dv.calcula_processo(self.entry_dv.get(), self.radio_dv_var.get() - 2)
+        self.texto_saida_2.insert(tk.INSERT, saida + '\n\n')
+        self.texto_saida_2.see(tk.END)
 
 def py_the_santo():
     '''busca arquivos de valor maior ou igual a um valor dado em um diretório'''
