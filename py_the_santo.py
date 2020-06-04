@@ -202,11 +202,11 @@ class Application(tk.Frame):
         self.entry_dv.bind('<Return>', self.calc_dv)
         self.run_dv = tk.Button(self.tab2, style_button, text='Calcula', command=self.calc_dv)
         self.run_dv.grid(row=8, column=0, columnspan=6)
+        ttk.Separator(self.tab2, orient=tk.HORIZONTAL).grid(row=9, columnspan=6, padx=10, pady=3, sticky=tk.EW)
 
         # Text de sáida
         self.texto_saida_2 = tk.Text(self.tab2, width=55, height=8,  bg='#33425c', fg='orange', font='Courier 9',
                                    wrap=tk.WORD)
-        # self.texto_saida.pack()
         self.texto_saida_2.grid(row=99, columnspan=6, padx=10, pady=5, sticky=tk.EW)
         self.texto_saida_2.bind('<Escape>', self.exit)  # com um Esc encera o programa
 
