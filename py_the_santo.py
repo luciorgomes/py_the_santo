@@ -161,12 +161,12 @@ class Application(tk.Frame):
         ttk.Label(self.tab2, text='Google', style='Title.TLabel').grid(row=0, column=0, columnspan=6,
                                                                                         pady=3)
         self.radio_google_rfb = tk.Radiobutton(self.tab2, text="Google RFB", variable=self.radio_google_var, value=1,
-                                               foreground="black", background="gray", indicatoron=0, bd=2, relief=tk.RAISED, width=24)
-        self.radio_google_rfb.grid(row=1, column=0,  padx=3, sticky='e', pady=3, columnspan=2)
+                                               foreground="black", background="gray", indicatoron=0, bd=2, relief=tk.RAISED, width=23, font='Helvetica 10')
+        self.radio_google_rfb.grid(row=1, column=0,  padx=4, pady=3, sticky='e', columnspan=2)
         tt.ToolTip(self.radio_google_rfb, 'Pesquisa o termo no site da RFB usando o Google')
         self.radio_map_it = tk.Radiobutton(self.tab2, text='Maps', variable=self.radio_google_var, value=2,
-                                           foreground="black", background="gray", indicatoron=0, bd=2, relief=tk.RAISED, width=24)
-        self.radio_map_it.grid(row=1, column=2, padx=3, sticky='w', pady=3, columnspan=2)
+                                           foreground="black", background="gray", indicatoron=0, bd=2, relief=tk.RAISED, width=23, font='Helvetica 10')
+        self.radio_map_it.grid(row=1, column=2, padx=4, pady=3, sticky='w', columnspan=2)
         tt.ToolTip(self.radio_map_it, 'Pesquisa enderenço no Google Maps')
         self.entry_gm = tk.Entry(self.tab2, style_entry)
         self.entry_gm.grid(row=2, columnspan=6, pady=3, padx=8)
@@ -182,19 +182,19 @@ class Application(tk.Frame):
                   style='Title.TLabel').grid(row=5, column=0, columnspan=6, pady=3)
         self.radio_cpf = tk.Radiobutton(self.tab2, text="Cpf", variable=self.radio_dv_var, value=1,
                                                foreground="black", background="gray", indicatoron=0, bd=2,
-                                               relief=tk.RAISED, width=10)
+                                               relief=tk.RAISED, width=10, font='Helvetica 10')
         self.radio_cpf.grid(row=6, column=0, padx=3, sticky='e', pady=3)
         self.radio_cnpj = tk.Radiobutton(self.tab2, text="Cnpj", variable=self.radio_dv_var, value=2,
                                                foreground="black", background="gray", indicatoron=0, bd=2,
-                                               relief=tk.RAISED, width=10)
+                                               relief=tk.RAISED, width=10, font='Helvetica 10')
         self.radio_cnpj.grid(row=6, column=1, padx=3, sticky='e', pady=3)
         self.radio_proc_novo = tk.Radiobutton(self.tab2, text="Proc. /0000", variable=self.radio_dv_var, value=3,
                                                foreground="black", background="gray", indicatoron=0, bd=2,
-                                               relief=tk.RAISED, width=10)
+                                               relief=tk.RAISED, width=10, font='Helvetica 10')
         self.radio_proc_novo.grid(row=6, column=2, padx=3, sticky='e', pady=3)
         self.radio_proc_antigo = tk.Radiobutton(self.tab2, text="Proc. /00", variable=self.radio_dv_var, value=4,
                                                foreground="black", background="gray", indicatoron=0, bd=2,
-                                               relief=tk.RAISED, width=10)
+                                               relief=tk.RAISED, width=10, font='Helvetica 10')
         self.radio_proc_antigo.grid(row=6, column=3, padx=3, sticky='e', pady=3)
         self.radio_cpf.select()
         self.entry_dv = tk.Entry(self.tab2, style_entry)

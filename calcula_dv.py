@@ -1,5 +1,5 @@
 import re
-import sys
+
 
 def remove_caracteres(entrada):
     entrada_numerica =  re.sub("[-./]", "", entrada) # remove traço, ponto e barra
