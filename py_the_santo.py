@@ -365,12 +365,12 @@ class Application(tk.Frame):
         pesquisa = self.entry_gm.get()
         if self.google_chrome is not None:
             webbrowser.register('chrome', None, webbrowser.BackgroundBrowser(self.google_chrome))
-            if self.radio_var.get() == 1:
+            if self.radio_google_var.get() == 1:
                 webbrowser.get('chrome').open(f'https://www.google.com/search?q={pesquisa}+site:receita.economia.gov.br')
             else:
                 webbrowser.get('chrome').open(f'https://google.com/maps/place/{pesquisa}')
         else:
-            if self.radio_var.get() == 1:
+            if self.radio_google_var.get() == 1:
                 webbrowser.open(f'https://www.google.com/search?q={pesquisa}+site:receita.economia.gov.br')
             else:
                 webbrowser.open(f'https://google.com/maps/place/{pesquisa}')
