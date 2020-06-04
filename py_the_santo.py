@@ -8,6 +8,7 @@ import ToolTip as tt
 import webbrowser
 import time
 import re
+import os
 
 
 class Application(tk.Frame):
@@ -20,13 +21,15 @@ class Application(tk.Frame):
         self.valor_sublinhado = tk.IntVar()
         self.radio_var = tk.IntVar()
         self.pack()
+        self.google_chrome = self.busca_google_chrome()
 
         # cria os componentes da janela
         # estilos
         style = ttk.Style()
         style = ttk.Style()
-        style.configure('TNotebook', foreground="black", background="gray", font='Helvetica 11 bold')
-        style.configure('TNotebook.Tab', background='#555555')
+        style.configure('TFrame', foreground="black", background='gray')
+        style.configure('TNotebook', foreground="black", background='gray', font='Helvetica 11 bold')
+        style.configure('TNotebook.Tab', background='gray')
         style.map('TNotebook.Tab', background=[('selected', 'gray'), ('active', '#606060')],
                   foreground=[('selected', 'black'), ('active', '#bababa')])
         style.configure('Title.TLabel', foreground="black", background="gray", padding=1, font='Helvetica 11 bold')
@@ -44,9 +47,9 @@ class Application(tk.Frame):
 
         # tabs
         self.tabControl = ttk.Notebook(self.master, style='TNotebook')  # Create Tab Control
-        self.tab1 = ttk.Frame(self.tabControl, style='TNotebook')  # Create a tab
+        self.tab1 = ttk.Frame(self.tabControl, style='TFrame')  # Create a tab
         self.tabControl.add(self.tab1, text='e-Processo')  # Add the tab
-        self.tab2 = ttk.Frame(self.tabControl, style='TNotebook')  # Add a second tab
+        self.tab2 = ttk.Frame(self.tabControl, style='TFrame')  # Add a second tab
         self.tabControl.add(self.tab2, text='Outros')  # Make second tab visible
         self.tabControl.pack()  # Pack to make visible
         # self.tabControl.pack(expand=1, fill="both")  # Pack to make visible
@@ -157,30 +160,30 @@ class Application(tk.Frame):
         ttk.Label(self.tab2, text='Google', style='Title.TLabel').grid(row=0, column=0, columnspan=6,
                                                                                         pady=3)
         self.radio_google_rfb = tk.Radiobutton(self.tab2, text="Google RFB", variable=self.radio_var, value=1,
-                                               foreground="black", background="gray", indicatoron=0, bd=2, relief=tk.RAISED, width=24)
-        self.radio_google_rfb.grid(row=1, column=0,  padx=3, sticky='e')
+                                               foreground="black", background="gray", indicatoron=0, bd=2, relief=tk.RAISED, width=27)
+        self.radio_google_rfb.grid(row=1, column=0,  padx=3, sticky='w', pady=3)
         tt.ToolTip(self.radio_google_rfb, 'Pesquisa o termo no site da RFB usando o Google')
-        self.radio_map_it = tk.Radiobutton(self.tab2, text="Map It", variable=self.radio_var, value=2,
-                                           foreground="black", background="gray", indicatoron=0, bd=2, relief=tk.RAISED, width=24)
-        self.radio_map_it.grid(row=1, column=1, padx=3)
+        self.radio_map_it = tk.Radiobutton(self.tab2, text='Maps', variable=self.radio_var, value=2,
+                                           foreground="black", background="gray", indicatoron=0, bd=2, relief=tk.RAISED, width=27)
+        self.radio_map_it.grid(row=1, column=1, padx=3, sticky='e', pady=3)
         tt.ToolTip(self.radio_map_it, 'Pesquisa enderenço no Google Maps')
         self.entry_gm = tk.Entry(self.tab2, style_entry)
-        self.entry_gm.grid(row=2, columnspan=6, pady=3)
+        self.entry_gm.grid(row=2, columnspan=6, pady=3, padx=8)
         self.entry_gm.bind('<Return>', self.roda_google)
         self.radio_google_rfb.select()
         self.run_gm = tk.Button(self.tab2, style_button, text='Pesquisa', command=self.roda_google)
         self.run_gm.grid(row=3, column=0, columnspan=6)
-        ttk.Separator(self.tab2, orient=tk.HORIZONTAL).grid(row=4, columnspan=6, padx=10, pady=5, sticky=tk.EW)
+        tt.ToolTip(self.run_gm, 'Aciona a consulta do termo ou endereço para a opção selecionada (Google RFB ou Maps)')
+        ttk.Separator(self.tab2, orient=tk.HORIZONTAL).grid(row=4, columnspan=6, padx=10, pady=3, sticky=tk.EW)
 
 
     def define_raiz(self):
         '''Define caracterísicas da janela'''
-
         self.master.title('Py the Santo...')
         self.master.configure(bg='gray')
         # dimensões da janela
         largura = 420
-        altura = 790
+        altura = 810
         # resolução da tela
         largura_screen = self.master.winfo_screenwidth()
         altura_screen = self.master.winfo_screenheight()
@@ -190,6 +193,7 @@ class Application(tk.Frame):
         self.master.geometry('%dx%d+%d+%d' % (largura, altura, posx, posy))  # dimensões + posição inicial
 
     def exit(self, event=None):
+        '''Fecha o aplicativo'''
         self.master.destroy()
 
     def formata_texto_nota(self, event=None):
@@ -279,18 +283,23 @@ class Application(tk.Frame):
         self.texto_saida.see(tk.END)
 
     def abre_e_processo(self, event=None):
+        '''Faz login no e-Processo'''
         webbrowser.open('https://eprocesso.suiterfb.receita.fazenda/')
 
     def abre_caixa_trabalho(self, event=None):
+        '''Abre caixa de trabalho de equipe no e-Processo'''
         webbrowser.open('https://eprocesso.suiterfb.receita.fazenda/eprocesso/index.html#/ngx/caixa-trabalho-equipe')
 
     def abre_gerencial_estoque(self, event=None):
+        '''Abre gerencioal de estoque no e-Processo'''
         webbrowser.open("https://eprocesso.suiterfb.receita.fazenda/relatorios/ControleManterVisao.asp?psAcao=exibir")
 
     def abre_consulta(self, event=None):
+        '''Abre consulta no e-Processo'''
         webbrowser.open("https://eprocesso.suiterfb.receita.fazenda/eprocesso/index.html#/consultaProcesso")
 
     def abre_processos(self, event=None):
+        '''Abre processos copiados no cliupboard no e-Processo'''
         mem = pyperclip.paste()
         if ',' in mem: # se processos concatenados separados por vírgula
             mem = mem.split(',')
@@ -306,18 +315,34 @@ class Application(tk.Frame):
         self.texto_saida.insert(tk.INSERT, f'Processo(s) aberto(s):\n{saída}\n')
         self.texto_saida.see(tk.END)
 
-    def roda_google(self, event=None):
-        pesquisa = self.entry_gm.get()
-        if self.radio_var.get() == 1:
-            webbrowser.open(f'https://www.google.com/search?q={pesquisa}+site:receita.economia.gov.br')
+    def busca_google_chrome(self):
+        '''Verifica a existência da instalação do Google Chrome no Windows'''
+        path = 'C:/Program Files (x86)/Google/Chrome/Application/chrome.exe'
+        if os.path.exists(path):
+            return path
         else:
-            webbrowser.open(f'https://google.com/maps/place/{pesquisa}')
+            return None
 
-def e_processo():
+    def roda_google(self, event=None):
+        '''Executa consulta no site da RFB usando o Google a abre endereço no Google Maps'''
+        pesquisa = self.entry_gm.get()
+        if self.google_chrome is not None:
+            webbrowser.register('chrome', None, webbrowser.BackgroundBrowser(self.google_chrome))
+            if self.radio_var.get() == 1:
+                webbrowser.get('chrome').open(f'https://www.google.com/search?q={pesquisa}+site:receita.economia.gov.br')
+            else:
+                webbrowser.get('chrome').open(f'https://google.com/maps/place/{pesquisa}')
+        else:
+            if self.radio_var.get() == 1:
+                webbrowser.open(f'https://www.google.com/search?q={pesquisa}+site:receita.economia.gov.br')
+            else:
+                webbrowser.open(f'https://google.com/maps/place/{pesquisa}')
+
+def py_the_santo():
     '''busca arquivos de valor maior ou igual a um valor dado em um diretório'''
     root = tk.Tk()
     app = Application(master=root)
     app.mainloop()
 
 if __name__ == '__main__':  # executa se chamado diretamente
-    e_processo()
+    py_the_santo()
