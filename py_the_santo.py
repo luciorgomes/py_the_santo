@@ -11,8 +11,6 @@ import re
 import os
 import calcula_dv
 
-
-
 class Application(tk.Frame):
     '''instancia a janela de parâmetros'''
     def __init__(self, master=None):
@@ -149,14 +147,14 @@ class Application(tk.Frame):
         tt.ToolTip(self.bt_abre_procs, 'Abre os processos os copiados na memória no e-Processo')
         ttk.Separator(self.tab1, orient=tk.HORIZONTAL).grid(row=25, columnspan=6, padx=10, pady=5, sticky=tk.EW)
 
-        # Text de sáida - parent = raiz
+        # Text de sáida
         self.texto_saida = tk.Text(self.tab1, width=55, height=8,  bg='#33425c', fg='orange', font='Courier 9',
                                    wrap=tk.WORD)
         # self.texto_saida.pack()
         self.texto_saida.grid(row=26, columnspan=6, padx=10, pady=5, sticky=tk.EW)
         self.texto_saida.bind('<Escape>', self.exit)  # com um Esc encera o programa
         self.texto_nota.focus()
-        self.define_raiz()
+
 
         # tab2
         # Google
@@ -194,13 +192,28 @@ class Application(tk.Frame):
                                                foreground="black", background="gray", indicatoron=0, bd=2,
                                                relief=tk.RAISED, width=10)
         self.radio_proc_novo.grid(row=6, column=2, padx=3, sticky='e', pady=3)
-        self.radio_proc_antigo = tk.Radiobutton(self.tab2, text="Proc. /00", variable=self.radio_dv_var, value=3,
+        self.radio_proc_antigo = tk.Radiobutton(self.tab2, text="Proc. /00", variable=self.radio_dv_var, value=4,
                                                foreground="black", background="gray", indicatoron=0, bd=2,
                                                relief=tk.RAISED, width=10)
         self.radio_proc_antigo.grid(row=6, column=3, padx=3, sticky='e', pady=3)
         self.radio_cpf.select()
+        self.entry_dv = tk.Entry(self.tab2, style_entry)
+        self.entry_dv.grid(row=7, columnspan=6, pady=3, padx=8)
+        self.entry_dv.bind('<Return>', self.calc_dv)
+        self.run_dv = tk.Button(self.tab2, style_button, text='Calcula', command=self.calc_dv)
+        self.run_dv.grid(row=8, column=0, columnspan=6)
+
+        # Text de sáida
+        self.texto_saida_2 = tk.Text(self.tab2, width=55, height=8,  bg='#33425c', fg='orange', font='Courier 9',
+                                   wrap=tk.WORD)
+        # self.texto_saida.pack()
+        self.texto_saida_2.grid(row=99, columnspan=6, padx=10, pady=5, sticky=tk.EW)
+        self.texto_saida_2.bind('<Escape>', self.exit)  # com um Esc encera o programa
 
 
+
+
+        self.define_raiz()
 
     def define_raiz(self):
         '''Define caracterísicas da janela'''
@@ -362,6 +375,13 @@ class Application(tk.Frame):
                 webbrowser.open(f'https://www.google.com/search?q={pesquisa}+site:receita.economia.gov.br')
             else:
                 webbrowser.open(f'https://google.com/maps/place/{pesquisa}')
+
+    def calc_dv(self, event=None):
+        if self.radio_dv_var == 1:
+            saida = calcula_dv.calcula_cpf(self.entry_dv.get())
+            self.texto_saida_2.insert(tk.INSERT, saida + '\n\n')
+            self.texto_saida_2.see(tk.END)
+
 
 def py_the_santo():
     '''busca arquivos de valor maior ou igual a um valor dado em um diretório'''
