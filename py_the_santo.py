@@ -9,6 +9,8 @@ import webbrowser
 import time
 import re
 import os
+import calcula_dv
+
 
 
 class Application(tk.Frame):
@@ -19,7 +21,8 @@ class Application(tk.Frame):
         self.valor_negrito = tk.IntVar()
         self.valor_italico = tk.IntVar()
         self.valor_sublinhado = tk.IntVar()
-        self.radio_var = tk.IntVar()
+        self.radio_google_var = tk.IntVar()
+        self.radio_dv_var = tk.IntVar()
         self.pack()
         self.google_chrome = self.busca_google_chrome()
 
@@ -159,13 +162,13 @@ class Application(tk.Frame):
         # Google
         ttk.Label(self.tab2, text='Google', style='Title.TLabel').grid(row=0, column=0, columnspan=6,
                                                                                         pady=3)
-        self.radio_google_rfb = tk.Radiobutton(self.tab2, text="Google RFB", variable=self.radio_var, value=1,
-                                               foreground="black", background="gray", indicatoron=0, bd=2, relief=tk.RAISED, width=27)
-        self.radio_google_rfb.grid(row=1, column=0,  padx=3, sticky='w', pady=3)
+        self.radio_google_rfb = tk.Radiobutton(self.tab2, text="Google RFB", variable=self.radio_google_var, value=1,
+                                               foreground="black", background="gray", indicatoron=0, bd=2, relief=tk.RAISED, width=24)
+        self.radio_google_rfb.grid(row=1, column=0,  padx=3, sticky='e', pady=3, columnspan=2)
         tt.ToolTip(self.radio_google_rfb, 'Pesquisa o termo no site da RFB usando o Google')
-        self.radio_map_it = tk.Radiobutton(self.tab2, text='Maps', variable=self.radio_var, value=2,
-                                           foreground="black", background="gray", indicatoron=0, bd=2, relief=tk.RAISED, width=27)
-        self.radio_map_it.grid(row=1, column=1, padx=3, sticky='e', pady=3)
+        self.radio_map_it = tk.Radiobutton(self.tab2, text='Maps', variable=self.radio_google_var, value=2,
+                                           foreground="black", background="gray", indicatoron=0, bd=2, relief=tk.RAISED, width=24)
+        self.radio_map_it.grid(row=1, column=2, padx=3, sticky='w', pady=3, columnspan=2)
         tt.ToolTip(self.radio_map_it, 'Pesquisa enderenço no Google Maps')
         self.entry_gm = tk.Entry(self.tab2, style_entry)
         self.entry_gm.grid(row=2, columnspan=6, pady=3, padx=8)
@@ -175,6 +178,28 @@ class Application(tk.Frame):
         self.run_gm.grid(row=3, column=0, columnspan=6)
         tt.ToolTip(self.run_gm, 'Aciona a consulta do termo ou endereço para a opção selecionada (Google RFB ou Maps)')
         ttk.Separator(self.tab2, orient=tk.HORIZONTAL).grid(row=4, columnspan=6, padx=10, pady=3, sticky=tk.EW)
+
+        # Calcula DV
+        ttk.Label(self.tab2, text='Cálculo de Dígitos Verificadores',
+                  style='Title.TLabel').grid(row=5, column=0, columnspan=6, pady=3)
+        self.radio_cpf = tk.Radiobutton(self.tab2, text="Cpf", variable=self.radio_dv_var, value=1,
+                                               foreground="black", background="gray", indicatoron=0, bd=2,
+                                               relief=tk.RAISED, width=10)
+        self.radio_cpf.grid(row=6, column=0, padx=3, sticky='e', pady=3)
+        self.radio_cnpj = tk.Radiobutton(self.tab2, text="Cnpj", variable=self.radio_dv_var, value=2,
+                                               foreground="black", background="gray", indicatoron=0, bd=2,
+                                               relief=tk.RAISED, width=10)
+        self.radio_cnpj.grid(row=6, column=1, padx=3, sticky='e', pady=3)
+        self.radio_proc_novo = tk.Radiobutton(self.tab2, text="Proc. /0000", variable=self.radio_dv_var, value=3,
+                                               foreground="black", background="gray", indicatoron=0, bd=2,
+                                               relief=tk.RAISED, width=10)
+        self.radio_proc_novo.grid(row=6, column=2, padx=3, sticky='e', pady=3)
+        self.radio_proc_antigo = tk.Radiobutton(self.tab2, text="Proc. /00", variable=self.radio_dv_var, value=3,
+                                               foreground="black", background="gray", indicatoron=0, bd=2,
+                                               relief=tk.RAISED, width=10)
+        self.radio_proc_antigo.grid(row=6, column=3, padx=3, sticky='e', pady=3)
+        self.radio_cpf.select()
+
 
 
     def define_raiz(self):
