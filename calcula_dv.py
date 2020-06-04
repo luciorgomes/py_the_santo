@@ -6,6 +6,7 @@ def remove_caracteres(entrada):
     return entrada_numerica
 
 def calcula_cpf(ni):
+    saida = ''
     entrada_cpf = remove_caracteres(ni)
     if len(entrada_cpf) == 11 and entrada_cpf.isdecimal():
         cpf_calc = entrada_cpf[:9]
@@ -13,9 +14,7 @@ def calcula_cpf(ni):
         cpf_calc = entrada_cpf
     else:
         cpf_calc = None
-        saida = f'Informe a entrada com 9 ou 11 \ndígitos'
-        return saida
-        sys.exit()
+        saida = f'Informe a entrada com 9 ou 11 dígitos'
 
     if cpf_calc is not None:
         soma1 = 0
@@ -42,9 +41,10 @@ def calcula_cpf(ni):
             saida = f'{entrada_cpf[:3]}.{entrada_cpf[3:6]}.{entrada_cpf[6:9]}-{entrada_cpf[-2:]} correto!'
         else:
             saida = f'{entrada_cpf[:3]}.{entrada_cpf[3:6]}.{entrada_cpf[6:9]}-{entrada_cpf[-2:]} incorreto!\nDV calculado = {str(dv1) + str(dv2)}'
-        return saida
+    return saida
 
 def calcula_cnpj(ni):
+    saida = ''
     entrada_cnpj = remove_caracteres(ni)
     if len(entrada_cnpj) == 14 and entrada_cnpj.isdecimal():
         cnpj_calc = entrada_cnpj[:12]
@@ -52,9 +52,7 @@ def calcula_cnpj(ni):
         cnpj_calc = entrada_cnpj
     else:
         cnpj_calc = None
-        saida = f'Informe a entrada com 14 ou 12 \ndígitos'
-        return saida
-        sys.exit()
+        saida = f'Informe a entrada com 14 ou 12 dígitos'
 
     if cnpj_calc is not None:
         soma1 = 0
@@ -86,9 +84,10 @@ def calcula_cnpj(ni):
             saida = f'{entrada_cnpj[:2]}.{entrada_cnpj[2:5]}.{entrada_cnpj[5:8]}/{entrada_cnpj[8:12]}-{entrada_cnpj[-2:]} correto!'
         else:
             saida = f'{entrada_cnpj[:2]}.{entrada_cnpj[2:5]}.{entrada_cnpj[5:8]}/{entrada_cnpj[8:12]}-{entrada_cnpj[-2:]} incorreto!\nDV calculado = {str(dv1) + str(dv2)}'
-        return saida
+    return saida
 
 def calcula_processo(processo, tipo):
+    saida=''
     entrada_processo = remove_caracteres(processo)
     if (len(entrada_processo) == 17 and tipo == 1) or (len(entrada_processo) == 15 and tipo == 2) \
             and entrada_processo.isdecimal():
@@ -99,11 +98,10 @@ def calcula_processo(processo, tipo):
     else:
         proc_calc = None
         if tipo == 1:
-            saída = f'Informe a entrada com 17 ou \n15 dígitos'
+            saida = f'Informe a entrada com 17 ou 15 dígitos'
         else:
-            saida  = f'Informe a entrada com 15 ou \n13 dígitos'
-            return saida
-            exit.sys()
+            saida  = f'Informe a entrada com 15 ou 13 dígitos'
+
 
     if proc_calc is not None:
         soma1 = 0
@@ -143,4 +141,4 @@ def calcula_processo(processo, tipo):
                 saida = f'{entrada_processo[:5]}-{entrada_processo[5:8]}.{entrada_processo[8:11]}/{entrada_processo[11:15]}-{entrada_processo[-2:]} correto!'
             else:
                 saida = f'{entrada_processo[:5]}-{entrada_processo[5:8]}.{entrada_processo[8:11]}/{entrada_processo[11:15]}-{entrada_processo[-2:]} \nincorreto! DV calculado = {str(dv1) + str(dv2)}'
-        return saida
+    return saida

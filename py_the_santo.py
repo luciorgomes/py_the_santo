@@ -202,6 +202,7 @@ class Application(tk.Frame):
         self.entry_dv.bind('<Return>', self.calc_dv)
         self.run_dv = tk.Button(self.tab2, style_button, text='Calcula', command=self.calc_dv)
         self.run_dv.grid(row=8, column=0, columnspan=6)
+        ttk.Separator(self.tab2, orient=tk.HORIZONTAL).grid(row=9, columnspan=6, padx=10, pady=3, sticky=tk.EW)
 
         # Text de sáida
         self.texto_saida_2 = tk.Text(self.tab2, width=55, height=8,  bg='#33425c', fg='orange', font='Courier 9',
@@ -226,13 +227,22 @@ class Application(tk.Frame):
         largura_screen = self.master.winfo_screenwidth()
         altura_screen = self.master.winfo_screenheight()
         # posição da janela
-        posx = 5 * largura_screen / 6 - largura / 2  # direita da tela
+        posx = 7 * largura_screen / 8 - largura / 2  # direita da tela
         posy = altura_screen / 2 - altura / 2  # meio da primeira tela
         self.master.geometry('%dx%d+%d+%d' % (largura, altura, posx, posy))  # dimensões + posição inicial
 
     def exit(self, event=None):
         '''Fecha o aplicativo'''
         self.master.destroy()
+
+    def imprime_saída(self, texto, tab=1):
+        '''Envia texto para o tk.Text de saída'''
+        if tab == 1:
+            self.texto_saida.insert(tk.INSERT, texto)
+            self.texto_saida.see(tk.END)
+        if tab == 2:
+            self.texto_saida_2.insert(tk.INSERT, texto)
+            self.texto_saida_2.see(tk.END)
 
     def formata_texto_nota(self, event=None):
         '''Aplica formatação a Nota de processo'''
@@ -268,46 +278,38 @@ class Application(tk.Frame):
         texto = self.texto_nota.get(1.0, tk.END)
         if len(texto) == 0:
             print('Informe o texto da nota')
-            self.texto_saida.insert(tk.INSERT, 'Informe o texto da nota\n\n')
-            self.texto_saida.see(tk.END)
+            self.imprime_saída('Informe o texto da nota\n\n', 1)
         else:
             texto = texto[:-1] # remove a nova linha do final do texto
             saida = prefixo + fonte_cor + texto + sufixo
             pyperclip.copy(saida)  # manda para o clipboard
             print('Nota copiada para a memória (cole com Ctrl+v)')
-            self.texto_saida.insert(tk.INSERT, saida + '\n\nNota copiada para a memória (cole com Ctrl+v)\n\n')
-            self.texto_saida.see(tk.END)
+            self.imprime_saída(saida + '\n\nNota copiada para a memória (cole com Ctrl+v)\n\n', 1)
 
     def link_url(self, event=None):
         '''Gera link (url) para Nota de processo'''
         link = self.entry_link.get()
         if len(link) == 0:
             print('Informe o link')
-            self.texto_saida.insert(tk.INSERT, 'Informe o link\n\n')
-            self.texto_saida.see(tk.END)
+            self.imprime_saída('Informe o link\n\n', 1)
         else:
             tag_link = f'<a href="{link}" target = "_blank" title = "{link}">{link}</a>'
             pyperclip.copy(tag_link)
             print('Texto do link copiado para a memória (cole com Ctrl+v)')
-            self.texto_saida.insert(tk.INSERT, tag_link +
-                                    '\n\nTexto do link copiado para a memória (cole com Ctrl+v)\n\n')
-            self.texto_saida.see(tk.END)
+            self.imprime_saída(tag_link + '\n\nTexto do link copiado para a memória (cole com Ctrl+v)\n\n', 1)
 
     def link_processo(self, event=None):
         '''Gera link para outro processo para ser inserido em Nota'''
         processo = self.entry_processo.get()
         if len(processo) == 0:
             print('Informe o processo.')
-            self.texto_saida.insert(tk.INSERT, 'Informe o processo\n\n')
-            self.texto_saida.see(tk.END)
+            self.imprime_saída('Informe o processo\n\n', 1)
         else:
             proc_filtered = ''.join(i for i in processo if i.isdigit())  # desconsidera tudo o que não for texto
             processo_link = f'<a href="https://eprocesso.suiterfb.receita.fazenda/ControleVisualizacaoProcesso.asp?psAcao=exibir&psNumeroProcesso={proc_filtered} " target = "_blank" title = "{proc_filtered} ">{proc_filtered} </a>'
             pyperclip.copy(processo_link)
             print('Texto do link copiado para a memória (cole com Ctrl+v)')
-            self.texto_saida.insert(tk.INSERT, processo_link +
-                                    '\n\nTexto do link copiado para a memória (cole com Ctrl+v)\n\n')
-            self.texto_saida.see(tk.END)
+            self.imprime_saída(processo_link + '\n\nTexto do link copiado para a memória (cole com Ctrl+v)\n\n', 1)
 
     def transpoe_clipboard(self):
         '''Transpõe relação de processos em coluna para serem abertos na caixa de trabalho ou em consulta'''
@@ -316,9 +318,7 @@ class Application(tk.Frame):
         transposed = ','.join(mem)
         pyperclip.copy(transposed)
         print('Relação transposta copiada para a memória (cole com Ctrl+v)')
-        self.texto_saida.insert(tk.INSERT, transposed +
-                                '\n\nRelação transposta copiada para a memória (cole com Ctrl+v)\n\n')
-        self.texto_saida.see(tk.END)
+        self.imprime_saída(transposed + '\n\nRelação transposta copiada para a memória (cole com Ctrl+v)\n\n', 1)
 
     def abre_e_processo(self, event=None):
         '''Faz login no e-Processo'''
@@ -350,8 +350,7 @@ class Application(tk.Frame):
                 webbrowser.open(f'https://eprocesso.suiterfb.receita.fazenda/ControleVisualizacaoProcesso.asp?psAcao=exibir&psNumeroProcesso={processo}')
                 time.sleep(0.5)
                 saída += processo + '\n'
-        self.texto_saida.insert(tk.INSERT, f'Processo(s) aberto(s):\n{saída}\n')
-        self.texto_saida.see(tk.END)
+        self.imprime_saída(f'Processo(s) aberto(s):\n{saída}\n', 1)
 
     def busca_google_chrome(self):
         '''Verifica a existência da instalação do Google Chrome no Windows'''
@@ -384,8 +383,7 @@ class Application(tk.Frame):
             saida = calcula_dv.calcula_cnpj(self.entry_dv.get())
         elif self.radio_dv_var.get() > 2:
             saida = calcula_dv.calcula_processo(self.entry_dv.get(), self.radio_dv_var.get() - 2)
-        self.texto_saida_2.insert(tk.INSERT, saida + '\n\n')
-        self.texto_saida_2.see(tk.END)
+        self.imprime_saída(saida + '\n\n', 2)
 
 def py_the_santo():
     '''busca arquivos de valor maior ou igual a um valor dado em um diretório'''
