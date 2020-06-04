@@ -170,6 +170,8 @@ class Application(tk.Frame):
         self.radio_google_rfb.select()
         self.run_gm = tk.Button(self.tab2, style_button, text='Pesquisa', command=self.roda_google)
         self.run_gm.grid(row=3, column=0, columnspan=6)
+        ttk.Separator(self.tab2, orient=tk.HORIZONTAL).grid(row=4, columnspan=6, padx=10, pady=5, sticky=tk.EW)
+
 
     def define_raiz(self):
         '''Define caracterísicas da janela'''
