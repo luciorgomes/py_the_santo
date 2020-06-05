@@ -341,7 +341,7 @@ class Application(tk.Frame):
         link = self.entry_link.get()
         if len(link) == 0:
             print('Informe o link')
-            self.imprime_saída('Informe o link\n\n', 1)
+            self.imprime_saída('Informe o endereço (url)\n\n', 1)
         else:
             tag_link = f'<a href="{link}" target = "_blank" title = "{link}">{link}</a>'
             pyperclip.copy(tag_link)
