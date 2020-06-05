@@ -22,6 +22,7 @@ class Application(tk.Frame):
         self.radio_link_var = tk.IntVar()
         self.radio_google_var = tk.IntVar()
         self.radio_dv_var = tk.IntVar()
+        self.radio_form_var = tk.IntVar()
         self.pack()
         self.google_chrome = self.busca_google_chrome()
 
@@ -45,7 +46,7 @@ class Application(tk.Frame):
                         'highlightbackground': 'black', 'cursor': 'hand2'}
         style_entry = {'bg': '#33425c', 'fg': 'orange', 'width': 55, 'font': 'Arial 10'}
         style_radio ={'foreground': 'black', 'background': 'gray', 'indicatoron': 0, 'bd': 1, 'relief': tk.FLAT,
-                      'font':'Helvetica 10'}
+                      'font':'Arial 10'}
 
         self.configure(bg='gray')
 
@@ -87,18 +88,19 @@ class Application(tk.Frame):
         tt.ToolTip(self.bt_gera_nota, 'Gera nota com o texto acima formatado conforme as seleções de estilo e cor')
         ttk.Separator(self.tab1, orient=tk.HORIZONTAL).grid(row=5, columnspan=6, padx=10, pady=5, sticky=tk.EW)
 
-        # Inclui url
+        # Inclui link
         ttk.Label(self.tab1, text='Inclui link em nota', style='Title.TLabel').grid(row=6, column=0, columnspan=6)
-        # ttk.Label(self.tab1, text='Link:', style='BG.TLabel').grid(row=7, column=0, sticky='w', padx=2)
-        self.radio_link_processo = tk.Radiobutton(self.tab1, style_radio, text="Processo", variable=self.radio_link_var,
-                                         value=1, width=24)
-        self.radio_link_processo.grid(row=7, column=0, padx=4, pady=3, sticky='we', columnspan=2)
-        tt.ToolTip(self.radio_link_processo, 'Gera Nota com link para processo.')
-        self.radio_link_url = tk.Radiobutton(self.tab1, style_radio, text='URL', variable=self.radio_link_var,
-                                           value=2, width=24)
-        self.radio_link_url.grid(row=7, column=2, padx=4, pady=3, sticky='we', columnspan=2)
+        self.frame_link = tk.Frame(self.tab1, width=40, bg='gray')
+        self.frame_link.grid(row=7, column=0, columnspan=4, sticky='we', padx=11)
+        self.radio_link_processo = tk.Radiobutton(self.frame_link, style_radio, text="Processo", variable=self.radio_link_var,
+                                         value=1, width=26)
+        self.radio_link_processo.grid(row=0, column=0, padx=3, pady=3, sticky='e')
+        tt.ToolTip(self.radio_link_processo, 'Gera nota com link para processo.')
+        self.radio_link_url = tk.Radiobutton(self.frame_link, style_radio, text='URL', variable=self.radio_link_var,
+                                           value=2, width=26)
+        self.radio_link_url.grid(row=0, column=1, padx=3, pady=3, sticky='w')
         self.radio_link_processo.select()
-        tt.ToolTip(self.radio_link_url, 'Gera Nota com link para url (http://...)')
+        tt.ToolTip(self.radio_link_url, 'Gera nota com link para url (http://...)')
 
         self.entry_link = tk.Entry(self.tab1, style_entry)
         self.entry_link.grid(row=8, columnspan=6)
@@ -108,19 +110,6 @@ class Application(tk.Frame):
         self.bt_gera_link.grid(row=9, column=0, columnspan=6)
         tt.ToolTip(self.bt_gera_link, 'Gera nota com link para o processo ou a url indicado acima')
         ttk.Separator(self.tab1, orient=tk.HORIZONTAL).grid(row=10, columnspan=6, padx=10, pady=5, sticky=tk.EW)
-
-        # Inclui link para processo
-        # self.label_titulo_3 = ttk.Label(self.tab1, text='Inclui link para outro processo em nota',
-        #                                 style='Title.TLabel').grid(row=11, columnspan=6)
-        # ttk.Label(self.tab1, text='Processo:', style='BG.TLabel').grid(row=12, column=0, sticky='w', padx=2)
-        # self.entry_processo = tk.Entry(self.tab1, style_entry)
-        # self.entry_processo.grid(row=13, columnspan=6)
-        # self.entry_processo.bind('<Escape>', self.exit)  # com um Esc encera o programa
-        # self.bt_gera_link_proc = tk.Button(self.tab1, style_button , text='Gera link para outro processo',
-        #                                    command=self.link_processo)
-        # self.bt_gera_link_proc.grid(row=14, column=0, columnspan=6)
-        # tt.ToolTip(self.bt_gera_link_proc, 'Gera nota com link para o processo indicado no campo acima')
-        # ttk.Separator(self.tab1, orient=tk.HORIZONTAL).grid(row=15, columnspan=6, padx=10, pady=5, sticky=tk.EW)
 
         # Transpõe processos
         ttk.Label(self.tab1, text='Transpõe relação de processos copiados na memória',
@@ -173,13 +162,15 @@ class Application(tk.Frame):
         # Google
         ttk.Label(self.tab2, text='Google', style='Title.TLabel').grid(row=0, column=0, columnspan=6,
                                                                                         pady=3)
-        self.radio_google_rfb = tk.Radiobutton(self.tab2, style_radio, text="Google RFB", variable=self.radio_google_var,
+        self.frame_google = tk.Frame(self.tab2, width=48, bg='gray')
+        self.frame_google.grid(row=1, column=0, columnspan=4, sticky='we', padx=24)
+        self.radio_google_rfb = tk.Radiobutton(self.frame_google, style_radio, text="Google RFB", variable=self.radio_google_var,
                                                value=1, width=24)
-        self.radio_google_rfb.grid(row=1, column=0,  padx=4, pady=3, sticky='we', columnspan=2)
-        tt.ToolTip(self.radio_google_rfb, 'Pesquisa o termo no site da RFB usando o Google')
-        self.radio_map_it = tk.Radiobutton(self.tab2,  style_radio, text='Maps', variable=self.radio_google_var,
+        self.radio_google_rfb.grid(row=1, column=0,  padx=4, pady=3, sticky='we')
+        tt.ToolTip(self.radio_google_rfb, 'Pesquisa termo no site da RFB usando o Google')
+        self.radio_map_it = tk.Radiobutton(self.frame_google,  style_radio, text='Maps', variable=self.radio_google_var,
                                            value=2, width=24)
-        self.radio_map_it.grid(row=1, column=2, padx=4, pady=3, sticky='we', columnspan=2)
+        self.radio_map_it.grid(row=1, column=1, padx=4, pady=3, sticky='we')
         tt.ToolTip(self.radio_map_it, 'Pesquisa enderenço no Google Maps')
         self.entry_gm = tk.Entry(self.tab2, style_entry)
         self.entry_gm.grid(row=2, columnspan=6, pady=3, padx=8)
@@ -193,30 +184,60 @@ class Application(tk.Frame):
         # Calcula DV
         ttk.Label(self.tab2, text='Cálculo de Dígitos Verificadores',
                   style='Title.TLabel').grid(row=5, column=0, columnspan=6, pady=3)
-        self.radio_cpf = tk.Radiobutton(self.tab2, style_radio, text="Cpf", variable=self.radio_dv_var, value=1,
+        self.frame_dv = tk.Frame(self.tab2, width=48, bg='gray')
+        self.frame_dv.grid(row=6, column=0, columnspan=4, sticky='we', padx=40)
+        self.radio_cpf = tk.Radiobutton(self.frame_dv, style_radio, text="Cpf", variable=self.radio_dv_var, value=1,
                                         width=10)
-        self.radio_cpf.grid(row=6, column=0, padx=3, sticky='we', pady=2)
-        self.radio_cnpj = tk.Radiobutton(self.tab2, style_radio, text="Cnpj", variable=self.radio_dv_var, value=2,
+        self.radio_cpf.grid(row=0, column=0, padx=3, sticky='we', pady=2)
+        self.radio_cnpj = tk.Radiobutton(self.frame_dv, style_radio, text="Cnpj", variable=self.radio_dv_var, value=2,
                                                width=10)
-        self.radio_cnpj.grid(row=6, column=1, padx=3, sticky='we', pady=2)
-        self.radio_proc_novo = tk.Radiobutton(self.tab2, style_radio, text="Proc. /0000", variable=self.radio_dv_var,
+        self.radio_cnpj.grid(row=0, column=1, padx=3, sticky='we', pady=2)
+        self.radio_proc_novo = tk.Radiobutton(self.frame_dv, style_radio, text="Proc. /0000", variable=self.radio_dv_var,
                                               value=3, width=10)
-        self.radio_proc_novo.grid(row=6, column=2, padx=3, sticky='we', pady=2)
-        self.radio_proc_antigo = tk.Radiobutton(self.tab2, style_radio, text="Proc. /00", variable=self.radio_dv_var,
+        self.radio_proc_novo.grid(row=0, column=2, padx=3, sticky='we', pady=2)
+        self.radio_proc_antigo = tk.Radiobutton(self.frame_dv, style_radio, text="Proc. /00", variable=self.radio_dv_var,
                                                 value=4, width=10)
-        self.radio_proc_antigo.grid(row=6, column=3, padx=3, sticky='we', pady=2)
+        self.radio_proc_antigo.grid(row=0, column=3, padx=3, sticky='we', pady=2)
         self.radio_cpf.select()
         self.entry_dv = tk.Entry(self.tab2, style_entry)
         self.entry_dv.grid(row=7, columnspan=6, pady=3, padx=8)
         self.entry_dv.bind('<Return>', self.calc_dv)
         self.run_dv = tk.Button(self.tab2, style_button, text='Calcula', command=self.calc_dv)
         self.run_dv.grid(row=8, column=0, columnspan=6)
+        tt.ToolTip(self.run_dv, 'Calcula ou valida os DV de CPF, CNPJ ou Processo (com ano de 4 e 2 dígitos).')
         ttk.Separator(self.tab2, orient=tk.HORIZONTAL).grid(row=9, columnspan=6, padx=10, pady=3, sticky=tk.EW)
+
+        # Formata Texto
+        ttk.Label(self.tab2, text='Formata texto',
+                  style='Title.TLabel').grid(row=10, column=0, columnspan=6, pady=3)
+        self.frame_form = tk.Frame(self.tab2, width=48, bg='gray')
+        self.frame_form.grid(row=11, column=0, columnspan=4, sticky='we', padx=40)
+        self.radio_maiusculo = tk.Radiobutton(self.frame_form, style_radio, text="XXXX", variable=self.radio_form_var,
+                                              value=1, width=10)
+        self.radio_maiusculo.grid(row=0, column=0, padx=3, sticky='we', pady=2)
+        self.radio_minusculo = tk.Radiobutton(self.frame_form, style_radio, text="xxxx", variable=self.radio_form_var,
+                                              value=2, width=10)
+        self.radio_minusculo.grid(row=0, column=1, padx=3, sticky='we', pady=2)
+        self.radio_title = tk.Radiobutton(self.frame_form, style_radio, text="Xxxx", variable=self.radio_form_var,
+                                              value=3, width=10)
+        self.radio_title.grid(row=0, column=2, padx=3, sticky='we', pady=2)
+        self.radio_inverso = tk.Radiobutton(self.frame_form, style_radio, text="X<>x", variable=self.radio_form_var,
+                                                value=4, width=10)
+        self.radio_inverso.grid(row=0, column=3, padx=3, sticky='we', pady=2)
+        self.radio_maiusculo.select()
+        self.entry_form = tk.Entry(self.tab2, style_entry)
+        self.entry_form.grid(row=12, columnspan=6, pady=3, padx=8)
+        self.entry_form.bind('<Return>', self.formata_txt)
+        self.run_dv = tk.Button(self.tab2, style_button, text='Formata', command=self.formata_txt)
+        self.run_dv.grid(row=13, column=0, columnspan=6)
+        tt.ToolTip(self.run_dv, 'Formata o texto em maiúsculas, minúsculas, nome próprio ou caixa invertida.')
+        ttk.Separator(self.tab2, orient=tk.HORIZONTAL).grid(row=14, columnspan=6, padx=10, pady=3, sticky=tk.EW)
+
 
         # Text de sáida
         self.texto_saida_2 = tk.Text(self.tab2, width=55, height=8,  bg='#33425c', fg='orange', font='Courier 9',
                                    wrap=tk.WORD)
-        self.texto_saida_2.grid(row=99, columnspan=6, padx=10, pady=5, sticky=tk.EW)
+        self.texto_saida_2.grid(row=99, columnspan=6, padx=10, pady=5, sticky='we')
         self.texto_saida_2.bind('<Escape>', self.exit)  # com um Esc encera o programa
 
 
@@ -398,6 +419,23 @@ class Application(tk.Frame):
         elif self.radio_dv_var.get() > 2:
             saida = calcula_dv.calcula_processo(self.entry_dv.get(), self.radio_dv_var.get() - 2)
         self.imprime_saída(saida + '\n\n', 2)
+
+    def formata_txt(self, event=None):
+        texto = self.entry_form.get()
+        saida = ''
+        if self.radio_form_var.get() == 1:
+            saida = texto.upper()
+        elif self.radio_form_var.get() == 2:
+            saida = texto.lower()
+        elif self.radio_form_var.get() == 3:
+            saida = texto.title()
+        else:
+            saida = texto.swapcase()
+        pyperclip.copy(saida)
+        print('Texto formatado enviado para a memória (cole com Ctrl+v)')
+        self.imprime_saída(f'Texto formatado = {saida} \n\nCopiado para a memória (cole com Ctrl+v)\n\n', 2)
+
+
 
 def py_the_santo():
     '''busca arquivos de valor maior ou igual a um valor dado em um diretório'''
