@@ -25,6 +25,7 @@ class Application(tk.Frame):
         self.radio_form_var = tk.IntVar()
         self.pack()
         self.google_chrome = self.busca_google_chrome()
+        self.define_raiz()
 
         # cria os componentes da janela
         # estilos
@@ -90,14 +91,14 @@ class Application(tk.Frame):
 
         # Inclui link
         ttk.Label(self.tab1, text='Inclui link em nota', style='Title.TLabel').grid(row=6, column=0, columnspan=6)
-        self.frame_link = tk.Frame(self.tab1, width=40, bg='gray')
+        self.frame_link = tk.Frame(self.tab1, width=40, bg='gray', padx=20)
         self.frame_link.grid(row=7, column=0, columnspan=4, sticky='we', padx=11)
         self.radio_link_processo = tk.Radiobutton(self.frame_link, style_radio, text="Processo", variable=self.radio_link_var,
-                                         value=1, width=26)
+                                         value=1, width=20)
         self.radio_link_processo.grid(row=0, column=0, padx=3, pady=3, sticky='e')
         tt.ToolTip(self.radio_link_processo, 'Gera nota com link para processo.')
         self.radio_link_url = tk.Radiobutton(self.frame_link, style_radio, text='URL', variable=self.radio_link_var,
-                                           value=2, width=26)
+                                           value=2, width=20)
         self.radio_link_url.grid(row=0, column=1, padx=3, pady=3, sticky='w')
         self.radio_link_processo.select()
         tt.ToolTip(self.radio_link_url, 'Gera nota com link para url (http://...)')
@@ -163,13 +164,13 @@ class Application(tk.Frame):
         ttk.Label(self.tab2, text='Google', style='Title.TLabel').grid(row=0, column=0, columnspan=6,
                                                                                         pady=3)
         self.frame_google = tk.Frame(self.tab2, width=48, bg='gray')
-        self.frame_google.grid(row=1, column=0, columnspan=4, sticky='we', padx=24)
+        self.frame_google.grid(row=1, column=0, columnspan=4, sticky='we', padx=28)
         self.radio_google_rfb = tk.Radiobutton(self.frame_google, style_radio, text="Google RFB", variable=self.radio_google_var,
-                                               value=1, width=24)
+                                               value=1, width=20)
         self.radio_google_rfb.grid(row=1, column=0,  padx=4, pady=3, sticky='we')
         tt.ToolTip(self.radio_google_rfb, 'Pesquisa termo no site da RFB usando o Google')
         self.radio_map_it = tk.Radiobutton(self.frame_google,  style_radio, text='Maps', variable=self.radio_google_var,
-                                           value=2, width=24)
+                                           value=2, width=20)
         self.radio_map_it.grid(row=1, column=1, padx=4, pady=3, sticky='we')
         tt.ToolTip(self.radio_map_it, 'Pesquisa enderenço no Google Maps')
         self.entry_gm = tk.Entry(self.tab2, style_entry)
@@ -184,20 +185,20 @@ class Application(tk.Frame):
         # Calcula DV
         ttk.Label(self.tab2, text='Cálculo de Dígitos Verificadores',
                   style='Title.TLabel').grid(row=5, column=0, columnspan=6, pady=3)
-        self.frame_dv = tk.Frame(self.tab2, width=48, bg='gray')
+        self.frame_dv = tk.Frame(self.tab2, width=20, bg='gray', padx=3)
         self.frame_dv.grid(row=6, column=0, columnspan=4, sticky='we', padx=40)
         self.radio_cpf = tk.Radiobutton(self.frame_dv, style_radio, text="Cpf", variable=self.radio_dv_var, value=1,
-                                        width=10)
-        self.radio_cpf.grid(row=0, column=0, padx=3, sticky='we', pady=2)
+                                        width=9)
+        self.radio_cpf.grid(row=0, column=0, sticky='we', pady=2)
         self.radio_cnpj = tk.Radiobutton(self.frame_dv, style_radio, text="Cnpj", variable=self.radio_dv_var, value=2,
-                                               width=10)
-        self.radio_cnpj.grid(row=0, column=1, padx=3, sticky='we', pady=2)
+                                               width=9)
+        self.radio_cnpj.grid(row=0, column=1, sticky='we', pady=2)
         self.radio_proc_novo = tk.Radiobutton(self.frame_dv, style_radio, text="Proc. /0000", variable=self.radio_dv_var,
-                                              value=3, width=10)
-        self.radio_proc_novo.grid(row=0, column=2, padx=3, sticky='we', pady=2)
+                                              value=3, width=9)
+        self.radio_proc_novo.grid(row=0, column=2, sticky='we', pady=2)
         self.radio_proc_antigo = tk.Radiobutton(self.frame_dv, style_radio, text="Proc. /00", variable=self.radio_dv_var,
-                                                value=4, width=10)
-        self.radio_proc_antigo.grid(row=0, column=3, padx=3, sticky='we', pady=2)
+                                                value=4, width=9)
+        self.radio_proc_antigo.grid(row=0, column=3, sticky='we', pady=2)
         self.radio_cpf.select()
         self.entry_dv = tk.Entry(self.tab2, style_entry)
         self.entry_dv.grid(row=7, columnspan=6, pady=3, padx=8)
@@ -211,20 +212,20 @@ class Application(tk.Frame):
         # Formata Texto
         ttk.Label(self.tab2, text='Formata texto',
                   style='Title.TLabel').grid(row=10, column=0, columnspan=6, pady=3)
-        self.frame_form = tk.Frame(self.tab2, width=48, bg='gray')
+        self.frame_form = tk.Frame(self.tab2, width=48, bg='gray', padx=3)
         self.frame_form.grid(row=11, column=0, columnspan=4, sticky='we', padx=40)
         self.radio_maiusculo = tk.Radiobutton(self.frame_form, style_radio, text="XXXX", variable=self.radio_form_var,
-                                              value=1, width=10)
-        self.radio_maiusculo.grid(row=0, column=0, padx=3, sticky='we', pady=2)
+                                              value=1, width=9)
+        self.radio_maiusculo.grid(row=0, column=0, sticky='we', pady=2)
         self.radio_minusculo = tk.Radiobutton(self.frame_form, style_radio, text="xxxx", variable=self.radio_form_var,
-                                              value=2, width=10)
-        self.radio_minusculo.grid(row=0, column=1, padx=3, sticky='we', pady=2)
+                                              value=2, width=9)
+        self.radio_minusculo.grid(row=0, column=1, sticky='we', pady=2)
         self.radio_title = tk.Radiobutton(self.frame_form, style_radio, text="Xxxx", variable=self.radio_form_var,
-                                              value=3, width=10)
-        self.radio_title.grid(row=0, column=2, padx=3, sticky='we', pady=2)
+                                              value=3, width=9)
+        self.radio_title.grid(row=0, column=2, sticky='we', pady=2)
         self.radio_inverso = tk.Radiobutton(self.frame_form, style_radio, text="X<>x", variable=self.radio_form_var,
-                                                value=4, width=10)
-        self.radio_inverso.grid(row=0, column=3, padx=3, sticky='we', pady=2)
+                                                value=4, width=9)
+        self.radio_inverso.grid(row=0, column=3, sticky='we', pady=2)
         self.radio_maiusculo.select()
         self.entry_form = tk.Entry(self.tab2, style_entry)
         self.entry_form.grid(row=12, columnspan=6, pady=3, padx=8)
@@ -237,22 +238,22 @@ class Application(tk.Frame):
 
 
         # Text de sáida
-        self.texto_saida_2 = tk.Text(self.tab2, width=55, height=8,  bg='#33425c', fg='orange', font='Courier 9',
+        self.texto_saida_2 = tk.Text(self.tab2, width=40, height=8,  bg='#33425c', fg='orange', font='Courier 9',
                                    wrap=tk.WORD)
-        self.texto_saida_2.grid(row=99, columnspan=6, padx=10, pady=5, sticky='we')
+        self.texto_saida_2.grid(row=99, columnspan=6, padx=5, pady=5, sticky='we')
         self.texto_saida_2.bind('<Escape>', self.exit)  # com um Esc encera o programa
 
 
 
 
-        self.define_raiz()
+
 
     def define_raiz(self):
         '''Define caracterísicas da janela'''
         self.master.title('Py the Santo...')
         self.master.configure(bg='gray')
         # dimensões da janela
-        largura = 420
+        largura = 415
         altura = 715
         # resolução da tela
         largura_screen = self.master.winfo_screenwidth()
