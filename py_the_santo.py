@@ -9,6 +9,7 @@ import webbrowser
 import time
 import re
 import os
+import limpa_csv
 import calcula_dv
 
 class Application(tk.Frame):
@@ -20,6 +21,7 @@ class Application(tk.Frame):
         self.valor_italico = tk.IntVar()
         self.valor_sublinhado = tk.IntVar()
         self.radio_link_var = tk.IntVar()
+        self.radio_csv_var = tk.IntVar()
         self.radio_google_var = tk.IntVar()
         self.radio_dv_var = tk.IntVar()
         self.radio_form_var = tk.IntVar()
@@ -54,6 +56,8 @@ class Application(tk.Frame):
         self.tabControl = ttk.Notebook(self.master, style='TNotebook')  # Create Tab Control
         self.tab1 = ttk.Frame(self.tabControl, style='TFrame')  # Create a tab
         self.tabControl.add(self.tab1, text='e-Processo')  # Add the tab
+        self.tab1a = ttk.Frame(self.tabControl, style='TFrame')  # Create a tab
+        self.tabControl.add(self.tab1a, text='Arquivos')  # Add the tab
         self.tab2 = ttk.Frame(self.tabControl, style='TFrame')  # Add a second tab
         self.tabControl.add(self.tab2, text='Outros')  # Make second tab visible
         self.tabControl.pack()  # Pack to make visible
@@ -157,6 +161,32 @@ class Application(tk.Frame):
         self.texto_saida.bind('<Escape>', self.exit)  # com um Esc encera o programa
         self.texto_nota.focus()
 
+        # tab1a
+        # Limpa csv
+        ttk.Label(self.tab1a, text='Limpa Arquivo .csv', style='Title.TLabel').grid(row=0, column=0, columnspan=6,
+                                                                       pady=3)
+        self.frame_csv = tk.Frame(self.tab1a, width=48, bg='gray')
+        self.frame_csv.grid(row=1, column=0, columnspan=4, sticky='we', padx=24)
+        self.radio_csv_virgula = tk.Radiobutton(self.frame_csv, style_radio, text='Separador = ","',
+                                               variable=self.radio_csv_var,
+                                               value=1, width=24)
+        self.radio_csv_virgula.grid(row=1, column=0, padx=4, pady=3, sticky='we')
+        tt.ToolTip(self.radio_csv_virgula, 'Usa vírgula como separador de colunas')
+        self.radio_csv_pontovirgula = tk.Radiobutton(self.frame_csv, style_radio, text='Separador = ";"',
+                                                     variable=self.radio_csv_var, value=2, width=24)
+        self.radio_csv_pontovirgula.grid(row=1, column=1, padx=4, pady=3, sticky='we')
+        tt.ToolTip(self.radio_csv_pontovirgula, 'Usa ponto e vírgula como separador de colunas')
+        self.radio_csv_virgula.select()
+        self.run_cvs = tk.Button(self.tab1a, style_button, text='Selcionar Arquivo e Executar', command=self.roda_csv)
+        self.run_cvs.grid(row=2, column=0, columnspan=6)
+        tt.ToolTip(self.run_cvs, 'Processa a remoção de caracteres inválidos no arquivo .csv selecionado')
+        ttk.Separator(self.tab1a, orient=tk.HORIZONTAL).grid(row=3, columnspan=6, padx=10, pady=3, sticky=tk.EW)
+
+        # Text de sáida
+        self.texto_saida_1a = tk.Text(self.tab1a, width=55, height=8,  bg='#33425c', fg='orange', font='Courier 9',
+                                   wrap=tk.WORD)
+        self.texto_saida_1a.grid(row=99, columnspan=6, padx=10, pady=5, sticky='we')
+        self.texto_saida_1a.bind('<Escape>', self.exit)  # com um Esc encera o programa
 
         # tab2
         # Google
@@ -266,12 +296,15 @@ class Application(tk.Frame):
         '''Fecha o aplicativo'''
         self.master.destroy()
 
-    def imprime_saída(self, texto, tab=1):
+    def imprime_saída(self, texto, tab='e-Processo'):
         '''Envia texto para o tk.Text de saída'''
-        if tab == 1:
+        if tab == 'e-Processo':
             self.texto_saida.insert(tk.INSERT, texto)
             self.texto_saida.see(tk.END)
-        if tab == 2:
+        if tab == 'Arquivos':
+            self.texto_saida_1a.insert(tk.INSERT, texto)
+            self.texto_saida_1a.see(tk.END)
+        if tab == 'Outros':
             self.texto_saida_2.insert(tk.INSERT, texto)
             self.texto_saida_2.see(tk.END)
 
@@ -315,7 +348,7 @@ class Application(tk.Frame):
             saida = prefixo + fonte_cor + texto + sufixo
             pyperclip.copy(saida)  # manda para o clipboard
             print('Nota copiada para a memória (cole com Ctrl+v)')
-            self.imprime_saída(saida + '\n\nNota copiada para a memória (cole com Ctrl+v)\n\n', 1)
+            self.imprime_saída(saida + '\n\nNota copiada para a memória (cole com Ctrl+v)\n\n', 'e-Processo')
 
     def link(self, event=None):
         if self.radio_link_var.get() == 1:
@@ -334,7 +367,7 @@ class Application(tk.Frame):
             processo_link = f'<a href="https://eprocesso.suiterfb.receita.fazenda/ControleVisualizacaoProcesso.asp?psAcao=exibir&psNumeroProcesso={proc_filtered} " target = "_blank" title = "{proc_filtered} ">{proc_filtered} </a>'
             pyperclip.copy(processo_link)
             print('Texto do link copiado para a memória (cole com Ctrl+v)')
-            self.imprime_saída(processo_link + '\n\nTexto do link copiado para a memória (cole com Ctrl+v)\n\n', 1)
+            self.imprime_saída(processo_link + '\n\nTexto do link copiado para a memória (cole com Ctrl+v)\n\n', 'e-Processo')
 
     def link_url(self, event=None):
         '''Gera link (url) para Nota de processo'''
@@ -346,7 +379,7 @@ class Application(tk.Frame):
             tag_link = f'<a href="{link}" target = "_blank" title = "{link}">{link}</a>'
             pyperclip.copy(tag_link)
             print('Texto do link copiado para a memória (cole com Ctrl+v)')
-            self.imprime_saída(tag_link + '\n\nTexto do link copiado para a memória (cole com Ctrl+v)\n\n', 1)
+            self.imprime_saída(tag_link + '\n\nTexto do link copiado para a memória (cole com Ctrl+v)\n\n', 'e-Processo')
 
     def transpoe_clipboard(self):
         '''Transpõe relação de processos em coluna para serem abertos na caixa de trabalho ou em consulta'''
@@ -355,7 +388,7 @@ class Application(tk.Frame):
         transposed = ','.join(mem)
         pyperclip.copy(transposed)
         print('Relação transposta copiada para a memória (cole com Ctrl+v)')
-        self.imprime_saída(transposed + '\n\nRelação transposta copiada para a memória (cole com Ctrl+v)\n\n', 1)
+        self.imprime_saída(transposed + '\n\nRelação transposta copiada para a memória (cole com Ctrl+v)\n\n', 'e-Processo')
 
     def abre_e_processo(self, event=None):
         '''Faz login no e-Processo'''
@@ -387,7 +420,7 @@ class Application(tk.Frame):
                 webbrowser.open(f'https://eprocesso.suiterfb.receita.fazenda/ControleVisualizacaoProcesso.asp?psAcao=exibir&psNumeroProcesso={processo}')
                 time.sleep(0.5)
                 saída += processo + '\n'
-        self.imprime_saída(f'Processo(s) aberto(s):\n{saída}\n', 1)
+        self.imprime_saída(f'Processo(s) aberto(s):\n{saída}\n', 'e-Processo')
 
     def busca_google_chrome(self):
         '''Verifica a existência da instalação do Google Chrome no Windows'''
@@ -396,6 +429,18 @@ class Application(tk.Frame):
             return path
         else:
             return None
+
+    def roda_csv(self, event=None):
+        file = limpa_csv.define_arquivo()
+        if self.radio_csv_var.get() == 1:
+            separador = ','
+        else:
+            separador = ';'
+        saída = limpa_csv.testa_e_executa(file, separador)
+        if saída is None:
+            self.imprime_saída('Feito!\n', 'Arquivos')
+        else:
+            self.imprime_saída(saída + '\n', 'Arquivos')
 
     def roda_google(self, event=None):
         '''Executa consulta no site da RFB usando o Google a abre endereço no Google Maps'''
@@ -420,7 +465,7 @@ class Application(tk.Frame):
             saida = calcula_dv.calcula_cnpj(self.entry_dv.get())
         elif self.radio_dv_var.get() > 2:
             saida = calcula_dv.calcula_processo(self.entry_dv.get(), self.radio_dv_var.get() - 2)
-        self.imprime_saída(saida + '\n\n', 2)
+        self.imprime_saída(saida + '\n\n', 'Outros')
 
     def formata_txt(self, event=None):
         texto = self.entry_form.get()
@@ -435,7 +480,7 @@ class Application(tk.Frame):
             saida = texto.swapcase()
         pyperclip.copy(saida)
         print('Texto formatado enviado para a memória (cole com Ctrl+v)')
-        self.imprime_saída(f'Texto formatado = {saida} \n\nCopiado para a memória (cole com Ctrl+v)\n\n', 2)
+        self.imprime_saída(f'Texto formatado = {saida} \n\nCopiado para a memória (cole com Ctrl+v)\n\n', 'Outros')
 
 
 
