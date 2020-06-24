@@ -54,7 +54,9 @@ class Application(tk.Frame):
         self.configure(bg='gray')
 
         # tabs
-        self.tabControl = ttk.Notebook(self.master, style='TNotebook')  # Create Tab Control
+        self.tab_frame = tk.Frame(self.master, bg='gray')
+        self.tab_frame.pack()
+        self.tabControl = ttk.Notebook(self.tab_frame, style='TNotebook')  # Create Tab Control
         self.tab1 = ttk.Frame(self.tabControl, style='TFrame')  # Create a tab
         self.tabControl.add(self.tab1, text='e-Processo')  # Add the tab
         self.tab1a = ttk.Frame(self.tabControl, style='TFrame')  # Create a tab
@@ -155,16 +157,16 @@ class Application(tk.Frame):
         ttk.Separator(self.tab1, orient=tk.HORIZONTAL).grid(row=25, columnspan=6, padx=10, pady=5, sticky=tk.EW)
 
         # Text de sáida
-        self.texto_saida = tk.Text(self.tab1, width=55, height=8,  bg='#33425c', fg='orange', font='Courier 9',
+        self.texto_saida = tk.Text(self.master, width=55, height=8,  bg='#33425c', fg='orange', font='Courier 9',
                                    wrap=tk.WORD)
-        # self.texto_saida.pack()
-        self.texto_saida.grid(row=26, columnspan=6, padx=10, pady=5, sticky=tk.EW)
-        self.texto_saida.bind('<Escape>', self.exit)  # com um Esc encera o programa
+        self.texto_saida.pack(pady=5)
+        # self.texto_saida.grid(row=26, columnspan=6, padx=10, pady=5, sticky=tk.EW)
+        # self.texto_saida.bind('<Escape>', self.exit)  # com um Esc encera o programa
         self.texto_nota.focus()
 
         # tab1a
         # Limpa csv
-        ttk.Label(self.tab1a, text='Limpa Arquivo .csv', style='Title.TLabel').grid(row=0, column=0, columnspan=6,
+        ttk.Label(self.tab1a, text='Limpa arquivo .csv', style='Title.TLabel').grid(row=0, column=0, columnspan=6,
                                                                        pady=3)
         self.frame_csv = tk.Frame(self.tab1a, width=48, bg='gray')
         self.frame_csv.grid(row=1, column=0, columnspan=4, sticky='we', padx=24)
@@ -191,12 +193,6 @@ class Application(tk.Frame):
         tt.ToolTip(self.run_bk, 'Faz o backup de todo o conteúdo de um diretório para um arquivo .zip')
         ttk.Separator(self.tab1a, orient=tk.HORIZONTAL).grid(row=6, columnspan=6, padx=10, pady=3, sticky=tk.EW)
 
-        # Text de sáida
-        self.texto_saida_1a = tk.Text(self.tab1a, width=55, height=8,  bg='#33425c', fg='orange', font='Courier 9',
-                                   wrap=tk.WORD)
-        self.texto_saida_1a.grid(row=99, columnspan=6, padx=10, pady=5, sticky='we')
-        self.texto_saida_1a.bind('<Escape>', self.exit)  # com um Esc encera o programa
-
         # tab2
         # Google
         ttk.Label(self.tab2, text='Google', style='Title.TLabel').grid(row=0, column=0, columnspan=6,
@@ -221,7 +217,7 @@ class Application(tk.Frame):
         ttk.Separator(self.tab2, orient=tk.HORIZONTAL).grid(row=4, columnspan=6, padx=10, pady=3, sticky=tk.EW)
 
         # Calcula DV
-        ttk.Label(self.tab2, text='Cálculo de Dígitos Verificadores',
+        ttk.Label(self.tab2, text='Cálculo de dígitos verificadores',
                   style='Title.TLabel').grid(row=5, column=0, columnspan=6, pady=3)
         self.frame_dv = tk.Frame(self.tab2, width=48, bg='gray')
         self.frame_dv.grid(row=6, column=0, columnspan=4, sticky='we', padx=40)
@@ -274,16 +270,6 @@ class Application(tk.Frame):
         tt.ToolTip(self.run_dv, 'Formata o texto em maiúsculas, minúsculas, nome próprio ou caixa invertida.')
         ttk.Separator(self.tab2, orient=tk.HORIZONTAL).grid(row=14, columnspan=6, padx=10, pady=3, sticky=tk.EW)
 
-
-        # Text de sáida
-        self.texto_saida_2 = tk.Text(self.tab2, width=55, height=8,  bg='#33425c', fg='orange', font='Courier 9',
-                                   wrap=tk.WORD)
-        self.texto_saida_2.grid(row=99, columnspan=6, padx=10, pady=5, sticky='we')
-        self.texto_saida_2.bind('<Escape>', self.exit)  # com um Esc encera o programa
-
-
-
-
         self.define_raiz()
 
     def define_raiz(self):
@@ -305,17 +291,10 @@ class Application(tk.Frame):
         '''Fecha o aplicativo'''
         self.master.destroy()
 
-    def imprime_saída(self, texto, tab='e-Processo'):
+    def imprime_saída(self, texto):
         '''Envia texto para o tk.Text de saída'''
-        if tab == 'e-Processo':
-            self.texto_saida.insert(tk.INSERT, texto)
-            self.texto_saida.see(tk.END)
-        if tab == 'Arquivos':
-            self.texto_saida_1a.insert(tk.INSERT, texto)
-            self.texto_saida_1a.see(tk.END)
-        if tab == 'Outros':
-            self.texto_saida_2.insert(tk.INSERT, texto)
-            self.texto_saida_2.see(tk.END)
+        self.texto_saida.insert(tk.INSERT, texto)
+        self.texto_saida.see(tk.END)
 
     def formata_texto_nota(self, event=None):
         '''Aplica formatação a Nota de processo'''
@@ -351,13 +330,13 @@ class Application(tk.Frame):
         texto = self.texto_nota.get(1.0, tk.END)
         if len(texto) == 0:
             print('Informe o texto da nota')
-            self.imprime_saída('Informe o texto da nota\n\n', 1)
+            self.imprime_saída('Informe o texto da nota\n\n')
         else:
             texto = texto[:-1] # remove a nova linha do final do texto
             saida = prefixo + fonte_cor + texto + sufixo
             pyperclip.copy(saida)  # manda para o clipboard
             print('Nota copiada para a memória (cole com Ctrl+v)')
-            self.imprime_saída(saida + '\n\nNota copiada para a memória (cole com Ctrl+v)\n\n', 'e-Processo')
+            self.imprime_saída(saida + '\n\nNota copiada para a memória (cole com Ctrl+v)\n\n')
 
     def link(self, event=None):
         if self.radio_link_var.get() == 1:
@@ -370,13 +349,13 @@ class Application(tk.Frame):
         processo = self.entry_link.get()
         if len(processo) == 0:
             print('Informe o processo.')
-            self.imprime_saída('Informe o processo\n\n', 1)
+            self.imprime_saída('Informe o processo\n\n')
         else:
             proc_filtered = ''.join(i for i in processo if i.isdigit())  # desconsidera tudo o que não for texto
             processo_link = f'<a href="https://eprocesso.suiterfb.receita.fazenda/ControleVisualizacaoProcesso.asp?psAcao=exibir&psNumeroProcesso={proc_filtered} " target = "_blank" title = "{proc_filtered} ">{proc_filtered} </a>'
             pyperclip.copy(processo_link)
             print('Texto do link copiado para a memória (cole com Ctrl+v)')
-            self.imprime_saída(processo_link + '\n\nTexto do link copiado para a memória (cole com Ctrl+v)\n\n', 'e-Processo')
+            self.imprime_saída(processo_link + '\n\nTexto do link copiado para a memória (cole com Ctrl+v)\n\n')
 
     def link_url(self, event=None):
         '''Gera link (url) para Nota de processo'''
@@ -388,7 +367,7 @@ class Application(tk.Frame):
             tag_link = f'<a href="{link}" target = "_blank" title = "{link}">{link}</a>'
             pyperclip.copy(tag_link)
             print('Texto do link copiado para a memória (cole com Ctrl+v)')
-            self.imprime_saída(tag_link + '\n\nTexto do link copiado para a memória (cole com Ctrl+v)\n\n', 'e-Processo')
+            self.imprime_saída(tag_link + '\n\nTexto do link copiado para a memória (cole com Ctrl+v)\n\n')
 
     def transpoe_clipboard(self):
         '''Transpõe relação de processos em coluna para serem abertos na caixa de trabalho ou em consulta'''
@@ -397,7 +376,7 @@ class Application(tk.Frame):
         transposed = ','.join(mem)
         pyperclip.copy(transposed)
         print('Relação transposta copiada para a memória (cole com Ctrl+v)')
-        self.imprime_saída(transposed + '\n\nRelação transposta copiada para a memória (cole com Ctrl+v)\n\n', 'e-Processo')
+        self.imprime_saída(transposed + '\n\nRelação transposta copiada para a memória (cole com Ctrl+v)\n\n')
 
     def abre_e_processo(self, event=None):
         '''Faz login no e-Processo'''
@@ -429,15 +408,7 @@ class Application(tk.Frame):
                 webbrowser.open(f'https://eprocesso.suiterfb.receita.fazenda/ControleVisualizacaoProcesso.asp?psAcao=exibir&psNumeroProcesso={processo}')
                 time.sleep(0.5)
                 saída += processo + '\n'
-        self.imprime_saída(f'Processo(s) aberto(s):\n{saída}\n', 'e-Processo')
-
-    def busca_google_chrome(self):
-        '''Verifica a existência da instalação do Google Chrome no Windows'''
-        path = 'C:/Program Files (x86)/Google/Chrome/Application/chrome.exe'
-        if os.path.exists(path):
-            return path
-        else:
-            return None
+        self.imprime_saída(f'Processo(s) aberto(s):\n{saída}\n')
 
     def roda_csv(self, event=None):
         file = limpa_csv.define_arquivo()
@@ -447,26 +418,38 @@ class Application(tk.Frame):
             separador = ';'
         retorno = limpa_csv.testa_e_executa(file, separador)
         if retorno is None:
-            self.imprime_saída('Feito!\n', 'Arquivos')
+            self.imprime_saída('Feito!\n')
         else:
-            self.imprime_saída(retorno + '\n', 'Arquivos')
+            self.imprime_saída(retorno + '\n')
 
     def roda_bk(self, event=None):
         folder = backup_to_zip.define_diretorio()
         try:
-            self.imprime_saída('Processando backup em ' + folder + '\n', 'Arquivos')
+            self.imprime_saída('Processando backup em ' + folder + '\n')
         except TypeError:
-            self.imprime_saída('Cancelado.\n', 'Arquivos')
+            self.imprime_saída('Cancelado.\n')
             return
         retorno = backup_to_zip.testa_e_executa(folder)
         print(retorno)
-        self.imprime_saída(retorno + '\n', 'Arquivos')
+        self.imprime_saída(retorno + '\n')
+
+    def busca_google_chrome(self):
+        '''Verifica a existência da instalação do Google Chrome no Windows'''
+        path = 'C:/Program Files (x86)/Google/Chrome/Application/chrome.exe'
+        if os.path.exists(path):
+            return path
+        else:
+            return None
 
     def roda_google(self, event=None):
         '''Executa consulta no site da RFB usando o Google a abre endereço no Google Maps'''
         pesquisa = self.entry_gm.get()
-        if self.google_chrome: # se localizado o google-chrome
-            webbrowser.register('chrome', None, webbrowser.BackgroundBrowser(self.google_chrome))
+        if pesquisa == '':
+            self.imprime_saída('Informe o termo ou endereço para busca.\n')
+            return
+        google_chrome = self.busca_google_chrome()
+        if google_chrome: # se localizado o google-chrome
+            webbrowser.register('chrome', None, webbrowser.BackgroundBrowser(google_chrome))
             if self.radio_google_var.get() == 1:
                 webbrowser.get('chrome').open(f'https://www.google.com/search?q={pesquisa}+site:receita.economia.gov.br')
             else:
@@ -485,10 +468,13 @@ class Application(tk.Frame):
             saida = calcula_dv.calcula_cnpj(self.entry_dv.get())
         elif self.radio_dv_var.get() > 2:
             saida = calcula_dv.calcula_processo(self.entry_dv.get(), self.radio_dv_var.get() - 2)
-        self.imprime_saída(saida + '\n\n', 'Outros')
+        self.imprime_saída(saida + '\n\n')
 
     def formata_txt(self, event=None):
         texto = self.entry_form.get()
+        if texto == '':
+            self.imprime_saída('Informe o texto a ser formatado.\n')
+            return
         saida = ''
         if self.radio_form_var.get() == 1:
             saida = texto.upper()
@@ -500,7 +486,7 @@ class Application(tk.Frame):
             saida = texto.swapcase()
         pyperclip.copy(saida)
         print('Texto formatado enviado para a memória (cole com Ctrl+v)')
-        self.imprime_saída(f'Texto formatado = {saida} \n\nCopiado para a memória (cole com Ctrl+v)\n\n', 'Outros')
+        self.imprime_saída(f'Texto formatado = {saida} \n\nCopiado para a memória (cole com Ctrl+v)\n\n')
 
 
 
