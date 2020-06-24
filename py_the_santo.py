@@ -190,7 +190,7 @@ class Application(tk.Frame):
         # Backup
         ttk.Label(self.tab1a, text='Backup de dirétório para .zip', style='Title.TLabel').grid(row=4, column=0, columnspan=6,
                                                                        pady=3)
-        self.run_bk = tk.Button(self.tab1a, style_button, text='Selecionar o Dirétório e Executar', command=self.roda_bk)
+        self.run_bk = tk.Button(self.tab1a, style_button, text='Selecionar o Diretório e Executar', command=self.roda_bk)
         self.run_bk.grid(row=5, column=0, columnspan=6)
         tt.ToolTip(self.run_bk, 'Faz o backup de todo o conteúdo de um diretório para um arquivo .zip')
         ttk.Separator(self.tab1a, orient=tk.HORIZONTAL).grid(row=6, columnspan=6, padx=10, pady=3, sticky=tk.EW)
