@@ -10,6 +10,7 @@ import time
 import re
 import os
 import limpa_csv
+import backup_to_zip
 import calcula_dv
 
 class Application(tk.Frame):
@@ -177,10 +178,18 @@ class Application(tk.Frame):
         self.radio_csv_pontovirgula.grid(row=1, column=1, padx=4, pady=3, sticky='we')
         tt.ToolTip(self.radio_csv_pontovirgula, 'Usa ponto e vírgula como separador de colunas')
         self.radio_csv_virgula.select()
-        self.run_cvs = tk.Button(self.tab1a, style_button, text='Selcionar Arquivo e Executar', command=self.roda_csv)
+        self.run_cvs = tk.Button(self.tab1a, style_button, text='Selecionar o Arquivo e Executar', command=self.roda_csv)
         self.run_cvs.grid(row=2, column=0, columnspan=6)
         tt.ToolTip(self.run_cvs, 'Processa a remoção de caracteres inválidos no arquivo .csv selecionado')
         ttk.Separator(self.tab1a, orient=tk.HORIZONTAL).grid(row=3, columnspan=6, padx=10, pady=3, sticky=tk.EW)
+
+        # Backup
+        ttk.Label(self.tab1a, text='Backup de dirétório para .zip', style='Title.TLabel').grid(row=4, column=0, columnspan=6,
+                                                                       pady=3)
+        self.run_bk = tk.Button(self.tab1a, style_button, text='Selecionar o Dirétório e Executar', command=self.roda_bk)
+        self.run_bk.grid(row=5, column=0, columnspan=6)
+        tt.ToolTip(self.run_bk, 'Faz o backup de todo o conteúdo de um diretório para um arquivo .zip')
+        ttk.Separator(self.tab1a, orient=tk.HORIZONTAL).grid(row=6, columnspan=6, padx=10, pady=3, sticky=tk.EW)
 
         # Text de sáida
         self.texto_saida_1a = tk.Text(self.tab1a, width=55, height=8,  bg='#33425c', fg='orange', font='Courier 9',
@@ -279,7 +288,7 @@ class Application(tk.Frame):
 
     def define_raiz(self):
         '''Define caracterísicas da janela'''
-        self.master.title('Py the Santo...')
+        self.master.title('Py de santo...')
         self.master.configure(bg='gray')
         # dimensões da janela
         largura = 420
@@ -436,11 +445,22 @@ class Application(tk.Frame):
             separador = ','
         else:
             separador = ';'
-        saída = limpa_csv.testa_e_executa(file, separador)
-        if saída is None:
+        retorno = limpa_csv.testa_e_executa(file, separador)
+        if retorno is None:
             self.imprime_saída('Feito!\n', 'Arquivos')
         else:
-            self.imprime_saída(saída + '\n', 'Arquivos')
+            self.imprime_saída(retorno + '\n', 'Arquivos')
+
+    def roda_bk(self, event=None):
+        folder = backup_to_zip.define_diretorio()
+        try:
+            self.imprime_saída('Processando backup em ' + folder + '\n', 'Arquivos')
+        except TypeError:
+            self.imprime_saída('Cancelado.\n', 'Arquivos')
+            return
+        retorno = backup_to_zip.testa_e_executa(folder)
+        print(retorno)
+        self.imprime_saída(retorno + '\n', 'Arquivos')
 
     def roda_google(self, event=None):
         '''Executa consulta no site da RFB usando o Google a abre endereço no Google Maps'''

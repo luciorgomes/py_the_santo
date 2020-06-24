@@ -1,6 +1,5 @@
 import os
 from tkinter import filedialog
-from tkinter import messagebox
 import io
 import re
 
@@ -35,7 +34,6 @@ def processa_arquivo_csv(file, separador=','):
         arquivo_saída = file[:-4] + '_tratado.csv'
         with open(arquivo_saída, 'w', encoding='latin-1', newline='\n') as saida:
             saida.write(final_contents)
-    return None
 
 def testa_e_executa(file, separador):
     '''verifica a validade dos parâmetros e chama o método de busca de arquivos'''
