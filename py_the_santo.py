@@ -70,20 +70,22 @@ class Application(tk.Frame):
         # tab 1
         # formata texto
         ttk.Label(self.tab1, text='Formata texto para nota', style='Title.TLabel').grid(row=0, column=0, columnspan=6, pady=3)
-        ttk.Label(self.tab1, text='Estilo:', style='BG.TLabel').grid(row=1, column=0, sticky='w', padx=2)
-        self.check_negrito = ttk.Checkbutton(self.tab1, text='Negrito', variable=self.valor_negrito, style='BG.TCheckbutton')
-        self.check_negrito.grid(row=1, column=1)
+        self.frame_formato = tk.Frame(self.tab1, width=40, bg='gray')
+        self.frame_formato.grid(row=1, column=0, columnspan=4, sticky='we', padx=11)
+        # ttk.Label(self.tab1, text='Estilo:', style='BG.TLabel').grid(row=1, column=0, sticky='w', padx=2)
+        self.check_negrito = ttk.Checkbutton(self.frame_formato, text='Negrito', variable=self.valor_negrito, style='BG.TCheckbutton')
+        self.check_negrito.grid(row=0, column=0)
         self.valor_negrito.set('1')
-        self.check_italico = ttk.Checkbutton(self.tab1, text='Itálico', variable=self.valor_italico, style='BG.TCheckbutton')
-        self.check_italico.grid(row=1, column=2)
-        self.check_sublinhado = ttk.Checkbutton(self.tab1, text='Sublinhado', variable=self.valor_sublinhado,
+        self.check_italico = ttk.Checkbutton(self.frame_formato, text='Itálico', variable=self.valor_italico, style='BG.TCheckbutton')
+        self.check_italico.grid(row=0, column=1)
+        self.check_sublinhado = ttk.Checkbutton(self.frame_formato, text='Sublinhado', variable=self.valor_sublinhado,
                                                 style='BG.TCheckbutton')
-        self.check_sublinhado.grid(row=1, column=3)
-        ttk.Label(self.tab1, text='Cor:', style='BG.TLabel').grid(row=2, column=1, sticky='e')
-        self.combo_color = ttk.Combobox(self.tab1, values=['Normal', 'Azul', 'Verde','Vermelho' ], style='Combo.TCombobox',
-                                        exportselection=0, width=10)
-        self.combo_color.grid(row=2, column=2, sticky='w')
-        self.combo_color.set('Normal')
+        self.check_sublinhado.grid(row=0, column=2)
+        # ttk.Label(self.frame_formato, text='Cor:', style='BG.TLabel').grid(row=0, column=3, sticky='e')
+        self.combo_color = ttk.Combobox(self.frame_formato, values=['Preto', 'Azul', 'Verde','Vermelho' ], style='Combo.TCombobox',
+                                        exportselection=0, width=9)
+        self.combo_color.grid(row=0, column=3, pady=3)
+        self.combo_color.set('Preto')
         self.texto_nota = tk.Text(self.tab1, width=55, height=5, bg='#33425c', fg='orange', font='Arial 10',
                                   wrap=tk.WORD) #bg original ='#125487'
         self.texto_nota.grid(row=3, columnspan=6)
@@ -323,7 +325,7 @@ class Application(tk.Frame):
         elif cor == 'Verde':
             fonte_cor = '<FONT COLOR="green">'
             sufixo += '</FONT>'
-        elif cor != 'Normal': # se for inserida uma cor manualmente
+        elif cor != 'Preto': # se for inserida uma cor manualmente
             fonte_cor = f'<FONT COLOR="{cor}">'
             sufixo += '</FONT>'
 
@@ -490,8 +492,6 @@ class Application(tk.Frame):
         pyperclip.copy(saida)
         print('Texto formatado enviado para a memória (cole com Ctrl+v)')
         self.imprime_saída(f'Texto formatado = {saida} \n\nCopiado para a memória (cole com Ctrl+v)\n\n')
-
-
 
 def py_the_santo():
     '''Roda o aplicativo'''
