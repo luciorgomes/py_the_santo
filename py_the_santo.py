@@ -411,6 +411,7 @@ class Application(tk.Frame):
         self.imprime_saída(f'Processo(s) aberto(s):\n{saída}\n')
 
     def roda_csv(self, event=None):
+        '''Executa a limbeza de arquivos .csv'''
         file = limpa_csv.define_arquivo()
         if self.radio_csv_var.get() == 1:
             separador = ','
@@ -423,6 +424,7 @@ class Application(tk.Frame):
             self.imprime_saída(retorno + '\n')
 
     def roda_bk(self, event=None):
+        '''Executa o backup de um diretório'''
         folder = backup_to_zip.define_diretorio()
         try:
             self.imprime_saída('Processando backup em ' + folder + '\n')
@@ -447,9 +449,8 @@ class Application(tk.Frame):
         if pesquisa == '':
             self.imprime_saída('Informe o termo ou endereço para busca.\n')
             return
-        google_chrome = self.busca_google_chrome()
-        if google_chrome: # se localizado o google-chrome
-            webbrowser.register('chrome', None, webbrowser.BackgroundBrowser(google_chrome))
+        if self.google_chrome: # se localizado o google-chrome
+            webbrowser.register('chrome', None, webbrowser.BackgroundBrowser(self.google_chrome))
             if self.radio_google_var.get() == 1:
                 webbrowser.get('chrome').open(f'https://www.google.com/search?q={pesquisa}+site:receita.economia.gov.br')
             else:
@@ -461,6 +462,7 @@ class Application(tk.Frame):
                 webbrowser.open(f'https://google.com/maps/place/{pesquisa}')
 
     def calc_dv(self, event=None):
+        '''Efetua o cálculo de dígitos verificadores'''
         # self.texto_saida_2.insert(tk.INSERT, self.entry_dv.get())
         if self.radio_dv_var.get() == 1:
             saida = calcula_dv.calcula_cpf(self.entry_dv.get())
@@ -471,6 +473,7 @@ class Application(tk.Frame):
         self.imprime_saída(saida + '\n\n')
 
     def formata_txt(self, event=None):
+        '''Altera a formatação de um texto'''
         texto = self.entry_form.get()
         if texto == '':
             self.imprime_saída('Informe o texto a ser formatado.\n')
@@ -491,7 +494,7 @@ class Application(tk.Frame):
 
 
 def py_the_santo():
-    '''busca arquivos de valor maior ou igual a um valor dado em um diretório'''
+    '''Roda o aplicativo'''
     root = tk.Tk()
     app = Application(master=root)
     app.mainloop()
