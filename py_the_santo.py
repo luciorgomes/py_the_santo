@@ -43,7 +43,7 @@ class Application(tk.Frame):
         style.configure('BW.TButton', foreground='#bfbfbf', background='black', highlightbackground='black',
                        width=51, font='Helvetica 11')
         style.configure('BG.TCheckbutton', selectcolor='#818181', foreground="black", background="gray"
-                        , bd=2, width=12, anchor='w')
+                        , bd=2, width=9, anchor='w')
         style.configure('Combo.TCombobox', foreground="black", background="gray", bordercolor='black')
         style_button = {'width': 45, 'bg': '#31363b', 'fg': 'white', 'font': 'Helvetica 10',
                         'highlightbackground': 'black', 'cursor': 'hand2'}
@@ -83,7 +83,7 @@ class Application(tk.Frame):
         self.check_sublinhado.grid(row=0, column=2)
         # ttk.Label(self.frame_formato, text='Cor:', style='BG.TLabel').grid(row=0, column=3, sticky='e')
         self.combo_color = ttk.Combobox(self.frame_formato, values=['Preto', 'Azul', 'Verde','Vermelho' ], style='Combo.TCombobox',
-                                        exportselection=0, width=12)
+                                        exportselection=0, width=9)
         self.combo_color.grid(row=0, column=3, pady=3)
         self.combo_color.set('Preto')
         self.texto_nota = tk.Text(self.frame_formato, width=55, height=5, bg='#33425c', fg='orange', font='Arial 10',

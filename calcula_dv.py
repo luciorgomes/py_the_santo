@@ -1,6 +1,5 @@
 import re
 
-
 def remove_caracteres(entrada):
     entrada_numerica =  re.sub("[-./]", "", entrada) # remove traço, ponto e barra
     return entrada_numerica
