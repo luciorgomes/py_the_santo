@@ -39,7 +39,6 @@ def executa_backup(folder):
                     continue  # não faz backup dos arquivos de backup anteriores.
                 backupZip.write(os.path.join(foldername, filename))
     saída += 'Feito!\n'
-    print(saída)
     return saída
     print('Feito!')
 

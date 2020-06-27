@@ -69,9 +69,9 @@ class Application(tk.Frame):
         # widgets
         # tab 1
         # formata texto
-        ttk.Label(self.tab1, text='Formata texto para nota', style='Title.TLabel').grid(row=0, column=0, columnspan=4, pady=3)
+        ttk.Label(self.tab1, text='Formata texto para nota', style='Title.TLabel').pack(pady=3)
         self.frame_formato = tk.Frame(self.tab1, width=45, bg='gray')
-        self.frame_formato.grid(row=1, column=0, columnspan=4, sticky='we', padx=5)
+        self.frame_formato.pack()
         # ttk.Label(self.tab1, text='Estilo:', style='BG.TLabel').grid(row=1, column=0, sticky='w', padx=2)
         self.check_negrito = ttk.Checkbutton(self.frame_formato, text='Negrito', variable=self.valor_negrito, style='BG.TCheckbutton')
         self.check_negrito.grid(row=0, column=0)
@@ -93,14 +93,14 @@ class Application(tk.Frame):
             tk.INSERT,'Solicitação formalizada indevidamente via e-Cac por meio de dossiê de Restituição de AFRMM.')
         self.texto_nota.bind('<Escape>', self.exit)  # com um Esc encera o programa
         self.bt_gera_nota = tk.Button(self.tab1, style_button, text='Gera nota formatada', command=self.formata_texto_nota)
-        self.bt_gera_nota.grid(row=4, column=0, columnspan=4)
+        self.bt_gera_nota.pack()
         tt.ToolTip(self.bt_gera_nota, 'Gera nota com o texto acima formatado conforme as seleções de estilo e cor')
-        ttk.Separator(self.tab1, orient=tk.HORIZONTAL).grid(row=5, columnspan=4, padx=5, pady=5, sticky=tk.EW)
+        ttk.Separator(self.tab1, orient=tk.HORIZONTAL).pack(fill=tk.X, padx=8, pady=3)
 
         # Inclui link
-        ttk.Label(self.tab1, text='Inclui link em nota', style='Title.TLabel').grid(row=6, column=0, columnspan=4)
+        ttk.Label(self.tab1, text='Inclui link em nota', style='Title.TLabel').pack(pady=3)
         self.frame_link = tk.Frame(self.tab1, width=45, bg='gray')
-        self.frame_link.grid(row=7, column=0, columnspan=4, sticky='we', padx=5)
+        self.frame_link.pack()
         self.radio_link_processo = tk.Radiobutton(self.frame_link, style_radio, text="Processo", variable=self.radio_link_var,
                                          value=1, width=23)
         self.radio_link_processo.grid(row=0, column=0, padx=3, pady=3, sticky='we')
@@ -111,52 +111,52 @@ class Application(tk.Frame):
         self.radio_link_processo.select()
         tt.ToolTip(self.radio_link_url, 'Gera nota com link para url (http://...)')
 
-        self.entry_link = tk.Entry(self.frame_link, style_entry)
-        self.entry_link.grid(row=8, columnspan=4)
+        self.entry_link = tk.Entry(self.tab1, style_entry)
+        self.entry_link.pack()
         # self.entry_link.insert(0, 'http://receita.economia.gov.br/')
         self.entry_link.bind('<Escape>', self.exit)  # com um Esc encera o programa
         self.bt_gera_link = tk.Button(self.tab1, style_button ,text='Gera link para nota', command=self.link)
-        self.bt_gera_link.grid(row=9, column=0, columnspan=4)
+        self.bt_gera_link.pack()
         tt.ToolTip(self.bt_gera_link, 'Gera nota com link para o processo ou a url indicado acima')
-        ttk.Separator(self.tab1, orient=tk.HORIZONTAL).grid(row=10, columnspan=4, padx=5, pady=5, sticky=tk.EW)
+        ttk.Separator(self.tab1, orient=tk.HORIZONTAL).pack(fill=tk.X, padx=8, pady=3)
 
         # Transpõe processos
         ttk.Label(self.tab1, text='Transpõe relação de processos copiados na memória',
-                                        style='Title.TLabel').grid(row=16, columnspan=4)
+                                        style='Title.TLabel').pack(pady=3)
         self.bt_transp_procs = tk.Button(self.tab1, style_button , text='Gera relação transposta',
                                          command=self.transpoe_clipboard)
-        self.bt_transp_procs.grid(row=17, column=0, columnspan=4)
+        self.bt_transp_procs.pack()
         tt.ToolTip(self.bt_transp_procs, f'Transpõe a relação de processos copiados na memória para ser colada'
                                          f' no e-Processo')
-        ttk.Separator(self.tab1, orient=tk.HORIZONTAL).grid(row=18, columnspan=4, padx=5, pady=5, sticky=tk.EW)
+        ttk.Separator(self.tab1, orient=tk.HORIZONTAL).pack(fill=tk.X, padx=8, pady=3)
 
         # Abre funcionalidades
-        ttk.Label(self.tab1, text='Abre funções / processos',style='Title.TLabel').grid(row=19, columnspan=4)
+        ttk.Label(self.tab1, text='Abre funções / processos',style='Title.TLabel').pack(pady=3)
         self.bt_abre_cx_trab = tk.Button(self.tab1, style_button ,text='Abre e-Processo',
                                          command=self.abre_e_processo)
-        self.bt_abre_cx_trab.grid(row=20, column=0, columnspan=4)
+        self.bt_abre_cx_trab.pack()
         tt.ToolTip(self.bt_abre_cx_trab, 'Abre a tela de login para o e-Processo')
 
         self.bt_abre_cx_trab_antiga = tk.Button(self.tab1, style_button ,text='Abre Caixa de Trabalho',
                                          command=self.abre_caixa_trabalho)
-        self.bt_abre_cx_trab_antiga.grid(row=21, column=0, columnspan=4)
+        self.bt_abre_cx_trab_antiga.pack()
         tt.ToolTip(self.bt_abre_cx_trab_antiga, 'Abre a caixa de trabalho de equipe no e-Processo')
 
         self.bt_abre_ger = tk.Button(self.tab1, style_button, text='Abre Gerencial de Estoque',
                   command=self.abre_gerencial_estoque)
-        self.bt_abre_ger.grid(row=22, column=0, columnspan=4)
+        self.bt_abre_ger.pack()
         tt.ToolTip(self.bt_abre_ger, 'Abre o gerencial de estoque de processos do e-Processo')
 
         self.bt_abre_consulta = tk.Button(self.tab1, style_button, text='Abre Consulta',
                   command=self.abre_consulta)
-        self.bt_abre_consulta.grid(row=23, column=0, columnspan=4)
+        self.bt_abre_consulta.pack()
         tt.ToolTip(self.bt_abre_consulta, 'Abre a consulta de processos do e-Processo')
 
         self.bt_abre_procs = tk.Button(self.tab1, style_button, text='Abre processos da área de transferência (clipboard)',
                   command=self.abre_processos)
-        self.bt_abre_procs.grid(row=24, column=0, columnspan=4)
+        self.bt_abre_procs.pack()
         tt.ToolTip(self.bt_abre_procs, 'Abre os processos os copiados na memória no e-Processo')
-        ttk.Separator(self.tab1, orient=tk.HORIZONTAL).grid(row=25, columnspan=4, padx=5, pady=5, sticky=tk.EW)
+        ttk.Separator(self.tab1, orient=tk.HORIZONTAL).pack(fill=tk.X, padx=8, pady=3)
 
         # Text de sáida
         self.texto_saida = tk.Text(self.master, width=55, height=8,  bg='#33425c', fg='orange', font='Courier 9',
@@ -168,109 +168,106 @@ class Application(tk.Frame):
 
         # tab1a
         # Limpa csv
-        ttk.Label(self.tab1a, text='Limpa arquivo .csv', style='Title.TLabel').grid(row=0, column=0, columnspan=4,
-                                                                       pady=3)
+        ttk.Label(self.tab1a, text='Limpa arquivo .csv', style='Title.TLabel').pack(pady=3)
         self.frame_csv = tk.Frame(self.tab1a, width=48, bg='gray')
-        self.frame_csv.grid(row=1, column=0, columnspan=4, sticky='we', padx=24)
+        self.frame_csv.pack()
         self.radio_csv_virgula = tk.Radiobutton(self.frame_csv, style_radio, text='Separador = ","',
                                                variable=self.radio_csv_var,
-                                               value=1, width=20)
+                                               value=1, width=23)
         self.radio_csv_virgula.grid(row=1, column=0, padx=4, pady=3, sticky='we')
         tt.ToolTip(self.radio_csv_virgula, 'Usa vírgula como separador de colunas')
         self.radio_csv_pontovirgula = tk.Radiobutton(self.frame_csv, style_radio, text='Separador = ";"',
-                                                     variable=self.radio_csv_var, value=2, width=20)
+                                                     variable=self.radio_csv_var, value=2, width=23)
         self.radio_csv_pontovirgula.grid(row=1, column=1, padx=4, pady=3, sticky='we')
         tt.ToolTip(self.radio_csv_pontovirgula, 'Usa ponto e vírgula como separador de colunas')
         self.radio_csv_virgula.select()
-        self.run_cvs = tk.Button(self.tab1a, style_button, text='Selecionar o Arquivo e Executar', command=self.roda_csv)
-        self.run_cvs.grid(row=2, column=0, columnspan=4)
+        self.run_cvs = tk.Button(self.tab1a, style_button, text='Selecionar o arquivo e executar', command=self.roda_csv)
+        self.run_cvs.pack()
         tt.ToolTip(self.run_cvs, 'Processa a remoção de caracteres inválidos no arquivo .csv selecionado')
-        ttk.Separator(self.tab1a, orient=tk.HORIZONTAL).grid(row=3, columnspan=4, padx=10, pady=3, sticky=tk.EW)
+        ttk.Separator(self.tab1a, orient=tk.HORIZONTAL).pack(fill=tk.X, padx=8, pady=3)
 
         # Backup
-        ttk.Label(self.tab1a, text='Backup de dirétório para .zip', style='Title.TLabel').grid(row=4, column=0, columnspan=4,
-                                                                       pady=3)
-        self.run_bk = tk.Button(self.tab1a, style_button, text='Selecionar o Diretório e Executar', command=self.roda_bk)
-        self.run_bk.grid(row=5, column=0, columnspan=4)
+        ttk.Label(self.tab1a, text='Backup de dirétório para .zip', style='Title.TLabel').pack(pady=3)
+        self.run_bk = tk.Button(self.tab1a, style_button, text='Selecionar o diretório e executar', command=self.roda_bk)
+        self.run_bk.pack()
         tt.ToolTip(self.run_bk, 'Faz o backup de todo o conteúdo de um diretório para um arquivo .zip')
-        ttk.Separator(self.tab1a, orient=tk.HORIZONTAL).grid(row=6, columnspan=4, padx=10, pady=3, sticky=tk.EW)
+        ttk.Separator(self.tab1a, orient=tk.HORIZONTAL).pack(fill=tk.X, padx=8, pady=3)
 
         # tab2
         # Google
-        ttk.Label(self.tab2, text='Google', style='Title.TLabel').grid(row=0, column=0, columnspan=4,
-                                                                                        pady=3)
+        ttk.Label(self.tab2, text='Google', style='Title.TLabel').pack(pady=3)
         self.frame_google = tk.Frame(self.tab2, width=48, bg='gray')
-        self.frame_google.grid(row=1, column=0, columnspan=4, sticky='we', padx=24)
+        self.frame_google.pack()
         self.radio_google_rfb = tk.Radiobutton(self.frame_google, style_radio, text="Google RFB", variable=self.radio_google_var,
-                                               value=1, width=20)
+                                               value=1, width=23)
         self.radio_google_rfb.grid(row=1, column=0,  padx=4, pady=3, sticky='we')
         tt.ToolTip(self.radio_google_rfb, 'Pesquisa termo no site da RFB usando o Google')
         self.radio_map_it = tk.Radiobutton(self.frame_google,  style_radio, text='Maps', variable=self.radio_google_var,
-                                           value=2, width=20)
+                                           value=2, width=23)
         self.radio_map_it.grid(row=1, column=1, padx=4, pady=3, sticky='we')
         tt.ToolTip(self.radio_map_it, 'Pesquisa enderenço no Google Maps')
         self.entry_gm = tk.Entry(self.tab2, style_entry)
-        self.entry_gm.grid(row=2, columnspan=4, pady=3, padx=8)
+        self.entry_gm.pack()
         self.entry_gm.bind('<Return>', self.roda_google)
         self.radio_google_rfb.select()
         self.run_gm = tk.Button(self.tab2, style_button, text='Pesquisa', command=self.roda_google)
-        self.run_gm.grid(row=3, column=0, columnspan=4)
+        self.run_gm.pack()
         tt.ToolTip(self.run_gm, 'Aciona a consulta do termo ou endereço para a opção selecionada (Google RFB ou Maps)')
-        ttk.Separator(self.tab2, orient=tk.HORIZONTAL).grid(row=4, columnspan=4, padx=10, pady=3, sticky=tk.EW)
+        ttk.Separator(self.tab2, orient=tk.HORIZONTAL).pack(fill=tk.X, padx=8, pady=3)
 
         # Calcula DV
         ttk.Label(self.tab2, text='Cálculo de dígitos verificadores',
-                  style='Title.TLabel').grid(row=5, column=0, columnspan=4, pady=3)
+                  style='Title.TLabel').pack(pady=3)
         self.frame_dv = tk.Frame(self.tab2, width=48, bg='gray')
-        self.frame_dv.grid(row=6, column=0, columnspan=4, sticky='we', padx=40)
+        self.frame_dv.pack()
         self.radio_cpf = tk.Radiobutton(self.frame_dv, style_radio, text="Cpf", variable=self.radio_dv_var, value=1,
-                                        width=8)
+                                        width=10)
         self.radio_cpf.grid(row=0, column=0, padx=3, sticky='we', pady=2)
         self.radio_cnpj = tk.Radiobutton(self.frame_dv, style_radio, text="Cnpj", variable=self.radio_dv_var, value=2,
-                                               width=8)
+                                               width=10)
         self.radio_cnpj.grid(row=0, column=1, padx=3, sticky='we', pady=2)
         self.radio_proc_novo = tk.Radiobutton(self.frame_dv, style_radio, text="Proc. /0000", variable=self.radio_dv_var,
-                                              value=3, width=8)
+                                              value=3, width=10)
         self.radio_proc_novo.grid(row=0, column=2, padx=3, sticky='we', pady=2)
         self.radio_proc_antigo = tk.Radiobutton(self.frame_dv, style_radio, text="Proc. /00", variable=self.radio_dv_var,
-                                                value=4, width=8)
+                                                value=4, width=10)
         self.radio_proc_antigo.grid(row=0, column=3, padx=3, sticky='we', pady=2)
         self.radio_cpf.select()
         self.entry_dv = tk.Entry(self.tab2, style_entry)
-        self.entry_dv.grid(row=7, columnspan=4, pady=3, padx=8)
+        self.entry_dv.pack()
         self.entry_dv.bind('<Return>', self.calc_dv)
         self.entry_dv.bind('<KP_Enter>', self.calc_dv)
         self.run_dv = tk.Button(self.tab2, style_button, text='Calcula', command=self.calc_dv)
-        self.run_dv.grid(row=8, column=0, columnspan=4)
+        self.run_dv.pack()
         tt.ToolTip(self.run_dv, 'Calcula ou valida os DV de CPF, CNPJ ou Processo (com ano de 4 e 2 dígitos).')
-        ttk.Separator(self.tab2, orient=tk.HORIZONTAL).grid(row=9, columnspan=4, padx=10, pady=3, sticky=tk.EW)
+        ttk.Separator(self.tab2, orient=tk.HORIZONTAL).pack(fill=tk.X, padx=8, pady=3)
 
         # Formata Texto
         ttk.Label(self.tab2, text='Formata texto',
-                  style='Title.TLabel').grid(row=10, column=0, columnspan=4, pady=3)
+                  style='Title.TLabel').pack(pady=3)
         self.frame_form = tk.Frame(self.tab2, width=48, bg='gray')
-        self.frame_form.grid(row=11, column=0, columnspan=4, sticky='we', padx=40)
+        self.frame_form.pack()
         self.radio_maiusculo = tk.Radiobutton(self.frame_form, style_radio, text="XXXX", variable=self.radio_form_var,
-                                              value=1, width=8)
+                                              value=1, width=10)
         self.radio_maiusculo.grid(row=0, column=0, padx=3, sticky='we', pady=2)
         self.radio_minusculo = tk.Radiobutton(self.frame_form, style_radio, text="xxxx", variable=self.radio_form_var,
-                                              value=2, width=8)
+                                              value=2, width=10)
         self.radio_minusculo.grid(row=0, column=1, padx=3, sticky='we', pady=2)
         self.radio_title = tk.Radiobutton(self.frame_form, style_radio, text="Xxxx", variable=self.radio_form_var,
-                                              value=3, width=8)
+                                              value=3, width=10)
         self.radio_title.grid(row=0, column=2, padx=3, sticky='we', pady=2)
         self.radio_inverso = tk.Radiobutton(self.frame_form, style_radio, text="X<>x", variable=self.radio_form_var,
-                                                value=4, width=8)
+                                                value=4, width=10)
         self.radio_inverso.grid(row=0, column=3, padx=3, sticky='we', pady=2)
         self.radio_maiusculo.select()
         self.entry_form = tk.Entry(self.tab2, style_entry)
-        self.entry_form.grid(row=12, columnspan=4, pady=3, padx=8)
+        self.entry_form.pack()
         self.entry_form.bind('<Return>', self.formata_txt)
         self.entry_form.bind('<KP_Enter>', self.formata_txt)
         self.run_dv = tk.Button(self.tab2, style_button, text='Formata', command=self.formata_txt)
-        self.run_dv.grid(row=13, column=0, columnspan=4)
+        self.run_dv.pack()
         tt.ToolTip(self.run_dv, 'Formata o texto em maiúsculas, minúsculas, nome próprio ou caixa invertida.')
-        ttk.Separator(self.tab2, orient=tk.HORIZONTAL).grid(row=14, columnspan=4, padx=10, pady=3, sticky=tk.EW)
+        ttk.Separator(self.tab2, orient=tk.HORIZONTAL).pack(fill=tk.X, padx=8, pady=3)
 
         self.define_raiz()
 
