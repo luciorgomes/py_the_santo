@@ -43,7 +43,7 @@ class Application(tk.Frame):
         style.configure('BW.TButton', foreground='#bfbfbf', background='black', highlightbackground='black',
                        width=51, font='Helvetica 11')
         style.configure('BG.TCheckbutton', selectcolor='#818181', foreground="black", background="gray"
-                        , bd=2, width=9, anchor='w')
+                        , bd=2, width=10, anchor='w')
         style.configure('Combo.TCombobox', foreground="black", background="gray", bordercolor='black')
         style_button = {'width': 45, 'bg': '#31363b', 'fg': 'white', 'font': 'Helvetica 10',
                         'highlightbackground': 'black', 'cursor': 'hand2'}
