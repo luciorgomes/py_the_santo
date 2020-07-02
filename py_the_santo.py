@@ -152,10 +152,16 @@ class Application(tk.Frame):
         self.bt_abre_consulta.pack()
         tt.ToolTip(self.bt_abre_consulta, 'Abre a consulta de processos do e-Processo')
 
-        self.bt_abre_procs = tk.Button(self.tab1, style_button, text='Abre processos da área de transferência (clipboard)',
+        self.bt_abre_procs = tk.Button(self.tab1, style_button, text='Abre processos copiados na área de transferência',
                   command=self.abre_processos)
         self.bt_abre_procs.pack()
         tt.ToolTip(self.bt_abre_procs, 'Abre os processos os copiados na memória no e-Processo')
+
+
+        self.bt_abre_procs = tk.Button(self.tab1, style_button, text='Abre palavras-chave dos processos copiados',
+                  command=self.abre_palavras_chave)
+        self.bt_abre_procs.pack()
+        tt.ToolTip(self.bt_abre_procs, 'Abre palavras-chave dos processos copiados na memória')
         ttk.Separator(self.tab1, orient=tk.HORIZONTAL).pack(fill=tk.X, padx=8, pady=3)
 
         # Text de sáida
@@ -394,7 +400,7 @@ class Application(tk.Frame):
         webbrowser.open("https://eprocesso.suiterfb.receita.fazenda/eprocesso/index.html#/consultaProcesso")
 
     def abre_processos(self, event=None):
-        '''Abre processos copiados no cliupboard no e-Processo'''
+        '''Abre processos copiados no cliuboard no e-Processo'''
         mem = pyperclip.paste()
         if ',' in mem: # se processos concatenados separados por vírgula
             mem = mem.split(',')
@@ -408,6 +414,22 @@ class Application(tk.Frame):
                 time.sleep(0.5)
                 saída += processo + '\n'
         self.imprime_saída(f'Processo(s) aberto(s):\n{saída}\n')
+
+    def abre_palavras_chave(self, event=None):
+        '''Abre palavras-chave copiados no clipboard no e-Processo'''
+        mem = pyperclip.paste()
+        if ',' in mem: # se processos concatenados separados por vírgula
+            mem = mem.split(',')
+        else:
+            mem = mem.split()
+        mem = [re.sub('[-./]', '', item) for item in mem] # exclui traço, ponto e barra para passar pelo isnumeric
+        saída = ''
+        for processo in mem:
+            if processo.isnumeric():
+                webbrowser.open(f'https://eprocesso.suiterfb.receita.fazenda/ControleConsultarPalavrasChave.asp?psAcao=exibir&psNumeroDocumento=&pbResponsavelProcesso=Nao&psNumeroProcesso={processo}')
+                time.sleep(0.5)
+                saída += processo + '\n'
+        self.imprime_saída(f'Palavras-chave aberta(s) para o(s) processo(s):\n{saída}\n')
 
     def roda_csv(self, event=None):
         '''Executa a limbeza de arquivos .csv'''
