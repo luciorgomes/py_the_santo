@@ -12,6 +12,7 @@ import os
 import limpa_csv
 import backup_to_zip
 import calcula_dv
+import threading
 
 class Application(tk.Frame):
     '''instancia a janela de parâmetros'''
@@ -35,7 +36,7 @@ class Application(tk.Frame):
         style = ttk.Style()
         style.configure('TFrame', foreground="black", background='gray')
         style.configure('TNotebook', foreground="black", background='gray', font='Helvetica 11 bold', borderwidth=0)
-        style.configure('TNotebook.Tab', background='gray', borderwidth=0)
+        style.configure('TNotebook.Tab', background='gray')
         style.map('TNotebook.Tab', background=[('selected', 'gray'), ('active', '#606060')],
                   foreground=[('selected', 'black'), ('active', '#bababa')])
         style.configure('Title.TLabel', foreground="black", background="gray", padding=1, font='Helvetica 11 bold')
