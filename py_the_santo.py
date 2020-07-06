@@ -12,7 +12,7 @@ import os
 import limpa_csv
 import backup_to_zip
 import calcula_dv
-import threading
+
 
 class Application(tk.Frame):
     '''instancia a janela de parâmetros'''
