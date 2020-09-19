@@ -168,7 +168,7 @@ class Application(tk.Frame):
         self.bt_abre_palavras_chave = tk.Button(self.tab1, style_button, text='Abre palavras-chave dos processos copiados',
                                        command=self.abre_palavras_chave)
         self.bt_abre_palavras_chave.pack()
-        tt.ToolTip(self.bt_abre_procs, 'Abre palavras-chave dos processos copiados na memória')
+        tt.ToolTip(self.bt_abre_palavras_chave, 'Abre palavras-chave dos processos copiados na memória')
         ttk.Separator(self.tab1, orient=tk.HORIZONTAL).pack(fill=tk.X, padx=8, pady=3)
 
         # Text de saida
