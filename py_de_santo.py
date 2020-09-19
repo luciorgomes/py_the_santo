@@ -481,6 +481,7 @@ class Application(tk.Frame):
     def roda_pdf(self, event=None):
         '''Concatena os arquivos pdf diretório'''
         retorno = combine_pdf.combine_pdf()
+        print(retorno)
         self.imprime_saida(retorno + '\n')
 
     def busca_google_chrome(self):

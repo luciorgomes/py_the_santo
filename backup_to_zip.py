@@ -49,8 +49,7 @@ def testa_e_executa(folder):
         os.chdir(folder)  # altera o diretório de trabalho para a pasta 'folder'
         retorno = executa_backup(folder)
         return retorno
-    except TypeError:
+    except (TypeError, FileNotFoundError):
         return info
-    except FileNotFoundError:
-        return info
+
 
