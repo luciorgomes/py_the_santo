@@ -83,7 +83,7 @@ class Application(tk.Frame):
         self.check_italico = ttk.Checkbutton(self.frame_formato, text='Itálico', variable=self.valor_italico,
                                              style='BG.TCheckbutton')
         self.check_italico.grid(row=0, column=1)
-        self.check_sublinhado = ttk.Checkbutton(self.frame_formato, text='Subl.', variable=self.valor_sublinhado,
+        self.check_sublinhado = ttk.Checkbutton(self.frame_formato, text='Sublin.', variable=self.valor_sublinhado,
                                                 style='BG.TCheckbutton')
         self.check_sublinhado.grid(row=0, column=2)
         # ttk.Label(self.frame_formato, text='Cor:', style='BG.TLabel').grid(row=0, column=3, sticky='e')
