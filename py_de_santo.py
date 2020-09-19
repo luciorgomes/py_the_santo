@@ -12,6 +12,7 @@ import os
 import limpa_csv
 import backup_to_zip
 import calcula_dv
+import combine_pdf
 
 
 class Application(tk.Frame):
@@ -205,6 +206,14 @@ class Application(tk.Frame):
                                 command=self.roda_bk)
         self.run_bk.pack()
         tt.ToolTip(self.run_bk, 'Faz o backup de todo o conteúdo de um diretório para um arquivo .zip')
+        ttk.Separator(self.tab1a, orient=tk.HORIZONTAL).pack(fill=tk.X, padx=8, pady=3)
+
+        # Concatena pdf
+        ttk.Label(self.tab1a, text='Concatenação de arquivos .pdf', style='Title.TLabel').pack(pady=3)
+        self.run_pdf = tk.Button(self.tab1a, style_button, text='Selecionar o diretório e executar',
+                                command=self.roda_pdf)
+        self.run_pdf.pack()
+        tt.ToolTip(self.run_pdf, 'Concatena os arquivos pdf de um diretório em um único arquivo.')
         ttk.Separator(self.tab1a, orient=tk.HORIZONTAL).pack(fill=tk.X, padx=8, pady=3)
 
         # tab2
@@ -467,6 +476,11 @@ class Application(tk.Frame):
             return
         retorno = backup_to_zip.testa_e_executa(folder)
         print(retorno)
+        self.imprime_saida(retorno + '\n')
+
+    def roda_pdf(self, event=None):
+        '''Concatena os arquivos pdf diretório'''
+        retorno = combine_pdf.combine_pdf()
         self.imprime_saida(retorno + '\n')
 
     def busca_google_chrome(self):
