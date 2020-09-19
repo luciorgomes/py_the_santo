@@ -51,7 +51,7 @@ def combine_pdf():
     with open("arquivos_concatenados.pdf", "wb") as fout:
         merger.write(fout)
     saida = 'Feito! Arquivo resultante = "arquivos_concatenados.pdf". Arquivos não processados: ' + ', '.join(erros)
-    print(saida)
+    # print(saida)
     return saida
 
 

@@ -96,7 +96,7 @@ class Application(tk.Frame):
                                   wrap=tk.WORD)  # bg original ='#125487'
         self.texto_nota.grid(row=1, columnspan=4, padx=3)
         self.texto_nota.insert(
-            tk.INSERT, 'Solicitação formalizada indevidamente via e-Cac por meio de dossiê de Restituição de AFRMM.')
+            tk.INSERT, 'Insira o texto da Nota aqui.')
         self.texto_nota.bind('<Escape>', self.exit)  # com um Esc encera o programa
         self.bt_gera_nota = tk.Button(self.tab1, style_button, text='Gera nota formatada',
                                       command=self.formata_texto_nota)
