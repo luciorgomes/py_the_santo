@@ -165,9 +165,9 @@ class Application(tk.Frame):
         self.bt_abre_procs.pack()
         tt.ToolTip(self.bt_abre_procs, 'Abre os processos os copiados na memória no e-Processo')
 
-        self.bt_abre_procs = tk.Button(self.tab1, style_button, text='Abre palavras-chave dos processos copiados',
+        self.bt_abre_palavras_chave = tk.Button(self.tab1, style_button, text='Abre palavras-chave dos processos copiados',
                                        command=self.abre_palavras_chave)
-        self.bt_abre_procs.pack()
+        self.bt_abre_palavras_chave.pack()
         tt.ToolTip(self.bt_abre_procs, 'Abre palavras-chave dos processos copiados na memória')
         ttk.Separator(self.tab1, orient=tk.HORIZONTAL).pack(fill=tk.X, padx=8, pady=3)
 
@@ -421,37 +421,31 @@ class Application(tk.Frame):
 
     def abre_processos(self, event=None):
         '''Abre processos copiados no cliuboard no e-Processo'''
-        mem = pyperclip.paste()
-        if ',' in mem:  # se processos concatenados separados por vírgula
-            mem = mem.split(',')
-        else:
-            mem = mem.split()
-        mem = [re.sub('[-./]', '', item) for item in mem]  # exclui traço, ponto e barra para passar pelo isnumeric
-        saida = ''
-        for processo in mem:
-            if processo.isnumeric():
-                webbrowser.open(
-                    f'https://eprocesso.suiterfb.receita.fazenda/ControleVisualizacaoProcesso.asp?psAcao=exibir&psNumeroProcesso={processo}')
-                time.sleep(0.5)
-                saida += processo + '\n'
-        self.imprime_saida(f'Processo(s) aberto(s):\n{saida}\n')
+        self.abre_proc(option='processo')
 
     def abre_palavras_chave(self, event=None):
         '''Abre palavras-chave copiados no clipboard no e-Processo'''
+        self.abre_proc(option='palavra-chave')
+
+    def abre_proc(self, option='proc', event=None):
+        '''Abre processos ou palavras-chave no cliuboard no e-Processo'''
         mem = pyperclip.paste()
         if ',' in mem:  # se processos concatenados separados por vírgula
             mem = mem.split(',')
         else:
             mem = mem.split()
         mem = [re.sub('[-./]', '', item) for item in mem]  # exclui traço, ponto e barra para passar pelo isnumeric
-        saida = ''
+        saida, url = ('', '')
         for processo in mem:
+            if option == 'processo': # se processo
+                url = f'https://eprocesso.suiterfb.receita.fazenda/ControleVisualizacaoProcesso.asp?psAcao=exibir&psNumeroProcesso={processo}'
+            elif option == 'palavra-chave': # se palavra-chave
+                url = f'https://eprocesso.suiterfb.receita.fazenda/ControleConsultarPalavrasChave.asp?psAcao=exibir&psNumeroDocumento=&pbResponsavelProcesso=Nao&psNumeroProcesso={processo}'
             if processo.isnumeric():
-                webbrowser.open(
-                    f'https://eprocesso.suiterfb.receita.fazenda/ControleConsultarPalavrasChave.asp?psAcao=exibir&psNumeroDocumento=&pbResponsavelProcesso=Nao&psNumeroProcesso={processo}')
+                webbrowser.open(url)
                 time.sleep(0.5)
                 saida += processo + '\n'
-        self.imprime_saida(f'Palavras-chave aberta(s) para o(s) processo(s):\n{saida}\n')
+        self.imprime_saida(f'P{option[1:]}(s) aberto/a(s):\n{saida}\n')
 
     def roda_csv(self, event=None):
         '''Executa a limbeza de arquivos .csv'''
