@@ -37,12 +37,20 @@ def combine_pdf():
 
     merger = PyPDF2.PdfFileMerger(strict=False)
 
+    erros = []
     for pdf in files:
-        merger.append(open(pdf, 'rb'))
+        try:
+            merger.append(open(pdf, 'rb'))
+        except (PyPDF2.utils.PdfReadError, AssertionError, ValueError):
+            erros.append(pdf)
+            print(pdf)
+        except RecursionError:
+            return 'Quantidade excessiva de páginas.'
+
 
     with open("arquivos_concatenados.pdf", "wb") as fout:
         merger.write(fout)
-    saida = 'Feito! Arqiuvo resultante = "arquivos_concatenados.pdf".'
+    saida = 'Feito! Arquivo resultante = "arquivos_concatenados.pdf". Arquivos não processados: ' + ', '.join(erros)
     print(saida)
     return saida
 
