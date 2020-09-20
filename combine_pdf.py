@@ -38,42 +38,33 @@ def combine_pdf():
     merger = PyPDF2.PdfFileMerger(strict=False)
     erros = []
     arquivos = 0
-    if len(files) < 20:
-        for pdf in files:
-            try:
-                merger.append(open(pdf, 'rb'))
-            except (PyPDF2.utils.PdfReadError, AssertionError, ValueError):
-                erros.append(pdf)
-                print(pdf)
-            except RecursionError:
-                return 'Quantidade excessiva de páginas.'
-        with open("arquivos_concatenados.pdf", "wb") as fout:
-            merger.write(fout)
-            merger.close()
-    else:
-        for pdf in files:
-            try:
-                merger.append(open(pdf, 'rb'))
-                arquivos += 1
-            except (PyPDF2.utils.PdfReadError, AssertionError, ValueError):
-                erros.append(pdf)
-                print(pdf)
-            except RecursionError:
-                return 'Quantidade excessiva de páginas.'
-            if arquivos == 20:
-                with open("arquivos_concatenados.pdf", "wb") as fout:
-                    merger.write(fout)
-                    merger.close()
-                    merger = PyPDF2.PdfFileMerger(strict=False)
-            elif arquivos % 20 == 0:
-                with open("arquivos_concatenados.pdf", "ab") as fout:
-                    merger.write(fout)
-                    merger.close()
-                    merger = PyPDF2.PdfFileMerger(strict=False)
-            elif arquivos == len(files):
-                with open("arquivos_concatenados.pdf", "ab") as fout:
-                    merger.write(fout)
-                    merger.close()
+    for pdf in files:
+        arquivos += 1
+        try:
+            merger.append(open(pdf, 'rb'))
+        except (PyPDF2.utils.PdfReadError, AssertionError, ValueError):
+            erros.append(pdf)
+            print(pdf)
+        except RecursionError:
+            return 'Quantidade excessiva de páginas.'
+        if arquivos == 20:
+            with open("arquivos_concatenados.pdf", "wb") as fout:
+                merger.write(fout)
+                merger.close()
+                merger = PyPDF2.PdfFileMerger(strict=False)
+        elif arquivos % 20 == 0:
+            with open("arquivos_concatenados.pdf", "ab") as fout:
+                merger.write(fout)
+                merger.close()
+                merger = PyPDF2.PdfFileMerger(strict=False)
+        elif arquivos == len(files):
+            if arquivos < 20:
+                tipo = 'wb'
+            else:
+                tipo = 'ab'
+            with open("arquivos_concatenados.pdf", tipo) as fout:
+                merger.write(fout)
+                merger.close()
 
 
     saida = 'Feito! Arquivo resultante = "arquivos_concatenados.pdf". Arquivos não processados: ' + ', '.join(erros)
