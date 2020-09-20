@@ -29,6 +29,8 @@ def combine_pdf():
     # gera lista com os nomes dos arquivos do diretório
     files = [a for a in glob.glob('*.pdf') if a != 'arquivos_concatenados.pdf']
 
+    files.sort(key=str.lower)
+
     # se lista vazia
     if not len(files):
         nenhum = 'Nenhum arquivo pdf encontrado'
@@ -37,38 +39,21 @@ def combine_pdf():
 
     merger = PyPDF2.PdfFileMerger(strict=False)
     erros = []
-    arquivos = 0
     for pdf in files:
-        arquivos += 1
+        print(pdf)
         try:
             merger.append(open(pdf, 'rb'))
         except (PyPDF2.utils.PdfReadError, AssertionError, ValueError):
             erros.append(pdf)
-            print(pdf)
-        except RecursionError:
-            return 'Quantidade excessiva de páginas.'
-        if arquivos == 20:
-            with open("arquivos_concatenados.pdf", "wb") as fout:
-                merger.write(fout)
-                merger.close()
-                merger = PyPDF2.PdfFileMerger(strict=False)
-        elif arquivos % 20 == 0:
-            with open("arquivos_concatenados.pdf", "ab") as fout:
-                merger.write(fout)
-                merger.close()
-                merger = PyPDF2.PdfFileMerger(strict=False)
-        elif arquivos == len(files):
-            if arquivos < 20:
-                tipo = 'wb'
-            else:
-                tipo = 'ab'
-            with open("arquivos_concatenados.pdf", tipo) as fout:
-                merger.write(fout)
-                merger.close()
-
+    try:
+        with open("arquivos_concatenados.pdf", "wb") as destino:
+            merger.write(destino)
+            merger.close()
+    except RecursionError:
+        return 'Quantidade excessiva de páginas.'
 
     saida = 'Feito! Arquivo resultante = "arquivos_concatenados.pdf". Arquivos não processados: ' + ', '.join(erros)
-    # print(saida)
+    print(saida)
     return saida
 
 
