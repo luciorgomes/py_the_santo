@@ -43,9 +43,7 @@ def testa_e_executa(file, separador):
         folder = os.path.dirname(file)
         os.chdir(folder)  # altera o diretório de trabalho para a pasta 'folder'
         processa_arquivo_csv(file, separador)
-    except TypeError:
-        return info
-    except FileNotFoundError:
+    except (TypeError, FileNotFoundError):
         return info
     except OSError:
         return erro

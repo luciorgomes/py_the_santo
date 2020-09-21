@@ -12,6 +12,7 @@ import os
 import limpa_csv
 import backup_to_zip
 import calcula_dv
+import combine_pdf
 
 
 class Application(tk.Frame):
@@ -82,7 +83,7 @@ class Application(tk.Frame):
         self.check_italico = ttk.Checkbutton(self.frame_formato, text='Itálico', variable=self.valor_italico,
                                              style='BG.TCheckbutton')
         self.check_italico.grid(row=0, column=1)
-        self.check_sublinhado = ttk.Checkbutton(self.frame_formato, text='Subl.', variable=self.valor_sublinhado,
+        self.check_sublinhado = ttk.Checkbutton(self.frame_formato, text='Sublin.', variable=self.valor_sublinhado,
                                                 style='BG.TCheckbutton')
         self.check_sublinhado.grid(row=0, column=2)
         # ttk.Label(self.frame_formato, text='Cor:', style='BG.TLabel').grid(row=0, column=3, sticky='e')
@@ -95,7 +96,7 @@ class Application(tk.Frame):
                                   wrap=tk.WORD)  # bg original ='#125487'
         self.texto_nota.grid(row=1, columnspan=4, padx=3)
         self.texto_nota.insert(
-            tk.INSERT, 'Solicitação formalizada indevidamente via e-Cac por meio de dossiê de Restituição de AFRMM.')
+            tk.INSERT, 'Insira o texto da Nota aqui.')
         self.texto_nota.bind('<Escape>', self.exit)  # com um Esc encera o programa
         self.bt_gera_nota = tk.Button(self.tab1, style_button, text='Gera nota formatada',
                                       command=self.formata_texto_nota)
@@ -164,10 +165,10 @@ class Application(tk.Frame):
         self.bt_abre_procs.pack()
         tt.ToolTip(self.bt_abre_procs, 'Abre os processos os copiados na memória no e-Processo')
 
-        self.bt_abre_procs = tk.Button(self.tab1, style_button, text='Abre palavras-chave dos processos copiados',
+        self.bt_abre_palavras_chave = tk.Button(self.tab1, style_button, text='Abre palavras-chave dos processos copiados',
                                        command=self.abre_palavras_chave)
-        self.bt_abre_procs.pack()
-        tt.ToolTip(self.bt_abre_procs, 'Abre palavras-chave dos processos copiados na memória')
+        self.bt_abre_palavras_chave.pack()
+        tt.ToolTip(self.bt_abre_palavras_chave, 'Abre palavras-chave dos processos copiados na memória')
         ttk.Separator(self.tab1, orient=tk.HORIZONTAL).pack(fill=tk.X, padx=8, pady=3)
 
         # Text de saida
@@ -205,6 +206,14 @@ class Application(tk.Frame):
                                 command=self.roda_bk)
         self.run_bk.pack()
         tt.ToolTip(self.run_bk, 'Faz o backup de todo o conteúdo de um diretório para um arquivo .zip')
+        ttk.Separator(self.tab1a, orient=tk.HORIZONTAL).pack(fill=tk.X, padx=8, pady=3)
+
+        # Concatena pdf
+        ttk.Label(self.tab1a, text='Concatenação de arquivos .pdf', style='Title.TLabel').pack(pady=3)
+        self.run_pdf = tk.Button(self.tab1a, style_button, text='Selecionar o diretório e executar',
+                                command=self.roda_pdf)
+        self.run_pdf.pack()
+        tt.ToolTip(self.run_pdf, 'Concatena os arquivos pdf de um diretório em um único arquivo.')
         ttk.Separator(self.tab1a, orient=tk.HORIZONTAL).pack(fill=tk.X, padx=8, pady=3)
 
         # tab2
@@ -412,37 +421,31 @@ class Application(tk.Frame):
 
     def abre_processos(self, event=None):
         '''Abre processos copiados no cliuboard no e-Processo'''
-        mem = pyperclip.paste()
-        if ',' in mem:  # se processos concatenados separados por vírgula
-            mem = mem.split(',')
-        else:
-            mem = mem.split()
-        mem = [re.sub('[-./]', '', item) for item in mem]  # exclui traço, ponto e barra para passar pelo isnumeric
-        saida = ''
-        for processo in mem:
-            if processo.isnumeric():
-                webbrowser.open(
-                    f'https://eprocesso.suiterfb.receita.fazenda/ControleVisualizacaoProcesso.asp?psAcao=exibir&psNumeroProcesso={processo}')
-                time.sleep(0.5)
-                saida += processo + '\n'
-        self.imprime_saida(f'Processo(s) aberto(s):\n{saida}\n')
+        self.abre_proc(option='processo')
 
     def abre_palavras_chave(self, event=None):
         '''Abre palavras-chave copiados no clipboard no e-Processo'''
+        self.abre_proc(option='palavra-chave')
+
+    def abre_proc(self, option='proc', event=None):
+        '''Abre processos ou palavras-chave no cliuboard no e-Processo'''
         mem = pyperclip.paste()
         if ',' in mem:  # se processos concatenados separados por vírgula
             mem = mem.split(',')
         else:
             mem = mem.split()
         mem = [re.sub('[-./]', '', item) for item in mem]  # exclui traço, ponto e barra para passar pelo isnumeric
-        saida = ''
+        saida, url = ('', '')
         for processo in mem:
+            if option == 'processo': # se processo
+                url = f'https://eprocesso.suiterfb.receita.fazenda/ControleVisualizacaoProcesso.asp?psAcao=exibir&psNumeroProcesso={processo}'
+            elif option == 'palavra-chave': # se palavra-chave
+                url = f'https://eprocesso.suiterfb.receita.fazenda/ControleConsultarPalavrasChave.asp?psAcao=exibir&psNumeroDocumento=&pbResponsavelProcesso=Nao&psNumeroProcesso={processo}'
             if processo.isnumeric():
-                webbrowser.open(
-                    f'https://eprocesso.suiterfb.receita.fazenda/ControleConsultarPalavrasChave.asp?psAcao=exibir&psNumeroDocumento=&pbResponsavelProcesso=Nao&psNumeroProcesso={processo}')
+                webbrowser.open(url)
                 time.sleep(0.5)
                 saida += processo + '\n'
-        self.imprime_saida(f'Palavras-chave aberta(s) para o(s) processo(s):\n{saida}\n')
+        self.imprime_saida(f'P{option[1:]}(s) aberto/a(s):\n{saida}\n')
 
     def roda_csv(self, event=None):
         '''Executa a limbeza de arquivos .csv'''
@@ -466,6 +469,12 @@ class Application(tk.Frame):
             self.imprime_saida('Cancelado.\n')
             return
         retorno = backup_to_zip.testa_e_executa(folder)
+        print(retorno)
+        self.imprime_saida(retorno + '\n')
+
+    def roda_pdf(self, event=None):
+        '''Concatena os arquivos pdf diretório'''
+        retorno = combine_pdf.combine_pdf()
         print(retorno)
         self.imprime_saida(retorno + '\n')
 
@@ -528,7 +537,7 @@ class Application(tk.Frame):
         self.imprime_saida(f'Texto formatado = {saida} \n\nCopiado para a memória (cole com Ctrl+v)\n\n')
 
 
-def py_the_santo():
+def py_de_santo():
     '''Roda o aplicativo'''
     root = tk.Tk()
     app = Application(master=root)
@@ -536,4 +545,4 @@ def py_the_santo():
 
 
 if __name__ == '__main__':  # executa se chamado diretamente
-    py_the_santo()
+    py_de_santo()
