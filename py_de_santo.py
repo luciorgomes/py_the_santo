@@ -38,7 +38,7 @@ class Application(tk.Frame):
         style = ttk.Style()
         style.configure('TFrame', foreground="black", background='gray')
         style.configure('TNotebook', foreground="black", background='gray', font='Helvetica 11 bold', borderwidth=0)
-        style.configure('TNotebook.Tab', background='gray', borderwidth=0)
+        style.configure('TNotebook.Tab', background='#6a6a6a', borderwidth=1)
         style.map('TNotebook.Tab', background=[('selected', 'gray'), ('active', '#606060')],
                   foreground=[('selected', 'black'), ('active', '#bababa')])
         style.configure('Title.TLabel', foreground="black", background="gray", padding=1, font='Helvetica 11 bold')
