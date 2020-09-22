@@ -48,7 +48,7 @@ class Application(tk.Frame):
         style.configure('BG.TCheckbutton', selectcolor='#818181', foreground="black", background="gray",
                         bd=1, width=7, anchor='w')
         style.configure('Combo.TCombobox', foreground="black", background="gray", bordercolor='black')
-        style_button = {'width': 38, 'bg': '#31363b', 'fg': 'white', 'font': 'Helvetica 10',
+        style_button = {'width': 40, 'bg': '#31363b', 'fg': 'white', 'font': 'Helvetica 10',
                         'highlightbackground': 'black', 'cursor': 'hand2'}
         style_entry = {'bg': '#33425c', 'fg': 'orange', 'width': 45, 'font': 'Arial 10'}
         style_radio = {'foreground': 'black', 'background': 'gray', 'indicatoron': 0, 'bd': 1, 'relief': tk.FLAT,
