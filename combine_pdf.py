@@ -11,7 +11,7 @@ import glob
 def combine_pdf():
     """
     Comcatena os arquivos pdf de uma pasta
-    :return(str): texto de saída
+    :return: str
     """
     # abre dialogbox para seleção do folder
     directory_root = tk.Tk()
@@ -48,11 +48,11 @@ def combine_pdf():
     try:
         with open("arquivos_concatenados.pdf", "wb") as destino:
             merger.write(destino)
-
     except RecursionError:
         return 'Quantidade excessiva de páginas.'
-    merger.close()
+
     saida = 'Feito! Arquivo resultante = "arquivos_concatenados.pdf". Arquivos não processados: ' + ', '.join(erros)
+    merger.close()
     print(saida)
     return saida
 

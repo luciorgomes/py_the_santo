@@ -4,6 +4,7 @@
 import pyperclip  # manipulação de arquivos binários, clipboard e leitura de linha de comando
 import tkinter as tk
 import tkinter.ttk as ttk
+from tkinter import filedialog
 import ToolTip as tt
 import webbrowser
 import time
@@ -12,7 +13,8 @@ import os
 import limpa_csv
 import backup_to_zip
 import calcula_dv
-import combine_pdf
+import glob
+import PyPDF2
 
 
 class Application(tk.Frame):
@@ -48,7 +50,7 @@ class Application(tk.Frame):
         style.configure('BG.TCheckbutton', selectcolor='#818181', foreground="black", background="gray",
                         bd=1, width=7, anchor='w')
         style.configure('Combo.TCombobox', foreground="black", background="gray", bordercolor='black')
-        style_button = {'width': 40, 'bg': '#31363b', 'fg': 'white', 'font': 'Helvetica 10',
+        style_button = {'width': 38, 'bg': '#31363b', 'fg': 'white', 'font': 'Helvetica 10',
                         'highlightbackground': 'black', 'cursor': 'hand2'}
         style_entry = {'bg': '#33425c', 'fg': 'orange', 'width': 45, 'font': 'Arial 10'}
         style_radio = {'foreground': 'black', 'background': 'gray', 'indicatoron': 0, 'bd': 1, 'relief': tk.FLAT,
@@ -308,7 +310,7 @@ class Application(tk.Frame):
         largura_screen = self.master.winfo_screenwidth()
         altura_screen = self.master.winfo_screenheight()
         # posição da janela
-        posx = 8 * largura_screen / 9 - largura / 2  # direita da tela
+        posx = 7 * largura_screen / 8 - largura / 2  # direita da tela
         posy = altura_screen / 2 - altura / 2  # meio da primeira tela
         self.master.geometry('%dx%d+%d+%d' % (largura, altura, posx, posy))  # dimensões + posição inicial
 
@@ -474,7 +476,52 @@ class Application(tk.Frame):
 
     def roda_pdf(self, event=None):
         '''Concatena os arquivos pdf diretório'''
-        retorno = combine_pdf.combine_pdf()
+        """
+        Comcatena os arquivos pdf de uma pasta
+        :return: str
+        """
+        retorno = ''
+        # abre dialogbox para seleção do folder
+        directory_root = tk.Tk()
+        directory_root.withdraw()
+        folder = filedialog.askdirectory(parent=directory_root, initialdir='/',
+                                         title='Selecione a pasta com os arquivos pdf')
+        if not len(folder):  # se clicou 'cancel'
+            cancel = "Comando cancelado."
+            print(cancel)
+            retorno = cancel
+
+        # altera o diretório de trabalho para a pasta 'folder'
+        os.chdir(folder)
+
+        # gera lista com os nomes dos arquivos do diretório
+        files = [a for a in glob.glob('*.pdf') if a != 'arquivos_concatenados.pdf']
+
+        files.sort(key=str.lower)
+
+        # se lista vazia
+        if not len(files):
+            nenhum = 'Nenhum arquivo pdf encontrado'
+            print(nenhum)
+            retorno = nenhum
+
+        merger = PyPDF2.PdfFileMerger(strict=False)
+        erros = []
+        for pdf in files:
+            print(pdf)
+            try:
+                merger.append(open(pdf, 'rb'))
+            except (PyPDF2.utils.PdfReadError, AssertionError, ValueError):
+                erros.append(pdf)
+        try:
+            with open("arquivos_concatenados.pdf", "wb") as destino:
+                merger.write(destino)
+        except RecursionError:
+            retorno = 'Quantidade excessiva de páginas.'
+
+        retorno = 'Feito! Arquivo resultante = "arquivos_concatenados.pdf". Arquivos não processados: ' + ', '.join(erros)
+        merger.close()
+
         print(retorno)
         self.imprime_saida(retorno + '\n')
 
