@@ -50,7 +50,7 @@ class Application(tk.Frame):
         style.configure('BG.TCheckbutton', selectcolor='#818181', foreground="black", background="gray",
                         bd=1, width=7, anchor='w')
         style.configure('Combo.TCombobox', foreground="black", background="gray", bordercolor='black')
-        style_button = {'width': 40, 'bg': '#31363b', 'fg': 'white', 'font': 'Helvetica 9',
+        style_button = {'width': 41, 'bg': '#31363b', 'fg': 'white', 'font': 'Helvetica 9',
                         'highlightbackground': 'black', 'cursor': 'hand2'}
         style_button_2 = {'width': 18, 'bg': '#31363b', 'fg': 'white', 'font': 'Helvetica 9',
                         'highlightbackground': 'black', 'cursor': 'hand2'}
@@ -184,12 +184,12 @@ class Application(tk.Frame):
 
         self.bt_abre_via_cpf = tk.Button(self.frame_link, style_button_2, text='Abre VIA - CPF',
                                        command=self.abre_via_cpf)
-        self.bt_abre_via_cpf.grid(row=0, column=0, padx=(0, 3), pady=(1, 0), sticky='we')
+        self.bt_abre_via_cpf.grid(row=0, column=0, sticky='we')
         tt.ToolTip(self.bt_abre_via_cpf, 'Abre o VIA para consulta a CPF')
 
         self.bt_abre_via_cnpj = tk.Button(self.frame_link, style_button_2, text='Abre VIA - CNPJ',
                                        command=self.abre_via_cnpj)
-        self.bt_abre_via_cnpj.grid(row=0, column=1, padx=(3, 0), pady=(1, 0), sticky='we')
+        self.bt_abre_via_cnpj.grid(row=0, column=1, sticky='we')
         tt.ToolTip(self.bt_abre_via_cnpj, 'Abre o VIA para consulta a CNPJ')
 
         ttk.Separator(self.tab1, orient=tk.HORIZONTAL).pack(fill=tk.X, padx=8, pady=3)
@@ -326,7 +326,7 @@ class Application(tk.Frame):
         self.master.configure(bg='gray')
         # dimensões da janela
         largura = 345
-        altura = 720
+        altura = 722
         # resolução da tela
         largura_screen = self.master.winfo_screenwidth()
         altura_screen = self.master.winfo_screenheight()
