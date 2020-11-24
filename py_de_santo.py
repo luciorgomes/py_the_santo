@@ -15,6 +15,7 @@ import backup_to_zip
 import calcula_dv
 import glob
 import PyPDF2
+import mouse_move
 
 
 class Application(tk.Frame):
@@ -295,6 +296,14 @@ class Application(tk.Frame):
         self.run_dv = tk.Button(self.tab2, style_button, text='Formata', command=self.formata_txt)
         self.run_dv.pack()
         tt.ToolTip(self.run_dv, 'Formata o texto em maiúsculas, minúsculas, nome próprio ou caixa invertida.')
+        ttk.Separator(self.tab2, orient=tk.HORIZONTAL).pack(fill=tk.X, padx=8, pady=3)
+
+        #Move Mouse
+        ttk.Label(self.tab2, text='Move mouse',
+                  style='Title.TLabel').pack(pady=3)
+        self.run_dv = tk.Button(self.tab2, style_button, text='Move', command=self.auto_move)
+        self.run_dv.pack()
+        tt.ToolTip(self.run_dv, 'Move o cursor do mouse para evitar logoff. PRESSIONE QUALQUER TECLA PARA ENCERRAR.')
         ttk.Separator(self.tab2, orient=tk.HORIZONTAL).pack(fill=tk.X, padx=8, pady=3)
 
         self.define_raiz()
@@ -582,6 +591,12 @@ class Application(tk.Frame):
         pyperclip.copy(saida)
         print('Texto formatado enviado para a memória (cole com Ctrl+v)')
         self.imprime_saida(f'Texto formatado = {saida} \n\nCopiado para a memória (cole com Ctrl+v)\n\n')
+
+    def auto_move(self):
+        'Move o maouse de forma automática para evitar o logoff'
+        mouse_move.move_mouse()
+        self.imprime_saida(f'Mouse interrompido! \n\n')
+
 
 
 def py_de_santo():
