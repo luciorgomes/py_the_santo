@@ -170,6 +170,11 @@ class Application(tk.Frame):
         self.bt_abre_triagem.pack()
         tt.ToolTip(self.bt_abre_triagem, 'Gera o relatório de Triagem do Secop 09')
 
+        self.bt_abre_triagem_SECOP = tk.Button(self.tab1, style_button, text='Gera Relatório Equipe TRIAGEM/SECOP 09',
+                                         command=self.abre_triagem)
+        self.bt_abre_triagem_SECOP.pack()
+        tt.ToolTip(self.bt_abre_triagem_SECOP, 'Recupera os processos em análise manual na equipe TRIAGEM do Secop 09')
+
         self.bt_abre_procs = tk.Button(self.tab1, style_button, text='Abre processos copiados na área de transferência',
                                        command=self.abre_processos)
         self.bt_abre_procs.pack()
@@ -327,7 +332,7 @@ class Application(tk.Frame):
         self.master.configure(bg='gray')
         # dimensões da janela
         largura = 345
-        altura = 722
+        altura = 740
         # resolução da tela
         largura_screen = self.master.winfo_screenwidth()
         altura_screen = self.master.winfo_screenheight()
@@ -447,6 +452,10 @@ class Application(tk.Frame):
         '''Abre o relatório de triagem do Secop 09'''
         webbrowser.open("https://eprocesso.suiterfb.receita.fazenda/relatorios/ControleManterVisao.asp?psAcao"
                         "=gerararquivocsv&pnIdVisao=382484&psIdTipoUnidadeHE=-1&psIdAtividadeHE=0")
+
+    def abre_triagem(self, event=None):
+        '''Abre o relatório de processos loaclizaddos na equipe TRIAGEM do Secop 09 para análise manual'''
+        webbrowser.open('https://eprocesso.suiterfb.receita.fazenda/relatorios/ControleManterVisao.asp?psAcao=gerararquivocsv&pnIdVisao=422944&psIdTipoUnidadeHE=19&psIdAtividadeHE=0')
 
     def abre_processos(self, event=None):
         '''Abre processos copiados no cliuboard no e-Processo'''
