@@ -29,6 +29,11 @@ def processa_arquivo_csv(file, separador=','):
             re_contents = re.sub(r'(?<![,]|\n)["](?![,]|\r)', '', re_contents)
         # substituir nova linha não seguida de aspas:
         re_contents = re.sub(r'\r\n(?!")', '', re_contents)
+        # remover CR antes de aspas, vírgula/ponto e vírgula, duas aspas e CR por nada:
+        if separador == ';':
+            re_contents = re.sub(r'\r";""\r', r'";""\r', re_contents)
+        else:
+            re_contents = re.sub(r'\r",""\r', r'",""\r', re_contents)
         # a penúltima substituição retira as primeiras " do início do arquivo, a última \n do final.
         final_contents = '"' + re_contents + '\n'
         arquivo_saída = file[:-4] + '_tratado.csv'
